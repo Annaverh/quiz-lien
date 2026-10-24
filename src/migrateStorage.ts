@@ -7,4 +7,4 @@ import { storage } from './lib/storage';
 for (const key of ['v1', 'mix/v1']) storage.migrate(`strum-pick-change/${key}`, `quiz-lien/${key}`);
 
 // Timing saved before the recordings were re-cut and measured points at the old clips.
-for (const key of ['strum-pick-change/timing/v1', 'quiz-lien/timing/v1']) storage.remove(key);
+for (const key of ['strum-pick-change/timing/v1', 'quiz-lien/timing/v1', 'quiz-lien/timing/v2']) storage.remove(key);

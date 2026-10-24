@@ -3,7 +3,7 @@ import { arrange, detune, type Arrangement, type ArrangeOptions } from '../music
 import type { NoteEvent, Song } from '../music/types';
 import { TRACKS, type TrackEntry } from './manifest';
 
-const TIMING_KEY = 'quiz-lien/timing/v2';
+const TIMING_KEY = 'quiz-lien/timing/v3';
 
 export interface SongTiming {
   /** Second in the recording where the fragment starts. */
