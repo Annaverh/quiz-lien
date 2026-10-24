@@ -1,6 +1,6 @@
 # Real-song recordings
 
-Put one MP3 per song in this folder (`public/audio/`), named after the song id:
+Put one MP3 per song in this folder (`src/assets/audio/`), named after the song id. The build gives each file a content-hashed URL, so a changed clip is never served from a stale browser cache:
 
 | Song                              | File                     |
 | --------------------------------- | ------------------------ |
@@ -20,10 +20,10 @@ Put one MP3 per song in this folder (`public/audio/`), named after the song id:
 | Hey There Delilah                 | `delilah.mp3`            |
 | Fast Car                          | `fast-car.mp3`           |
 
-Each file must also be listed in `TRACKS` in [`src/tracks/manifest.ts`](../../src/tracks/manifest.ts), for example:
+Each file must also be listed in `TRACKS` in [`src/tracks/manifest.ts`](../../tracks/manifest.ts), for example:
 
 ```js
-'wonderwall': { file: 'audio/wonderwall.mp3', start: 0 },
+'wonderwall': { file: 'wonderwall.mp3', start: 0 },
 ```
 
 `start` is the second in the file where the song's first chord begins (Em7 for Wonderwall).

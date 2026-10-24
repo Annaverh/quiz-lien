@@ -103,12 +103,12 @@
   font-weight: 700;
   color: var(--accent);
 }
-.cell.arrow.down {
+.cell.arrow.big {
   font-size: 1.9rem;
 }
-.cell.arrow.up {
-  font-size: 1.3rem;
-  opacity: 0.85;
+.cell.arrow.small {
+  font-size: 1.2rem;
+  opacity: 0.8;
 }
 .cell.arrow.rest {
   color: var(--line);

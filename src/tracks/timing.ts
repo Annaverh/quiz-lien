@@ -2,8 +2,9 @@ import { storage } from '../lib/storage';
 import { arrange, detune, type Arrangement, type ArrangeOptions } from '../music/arrangement';
 import type { NoteEvent, Song } from '../music/types';
 import { TRACKS, type TrackEntry } from './manifest';
+import { recordingUrl } from './recordings';
 
-const TIMING_KEY = 'quiz-lien/timing/v3';
+const TIMING_KEY = 'quiz-lien/timing/v4';
 
 export interface SongTiming {
   /** Second in the recording where the fragment starts. */
@@ -15,7 +16,11 @@ export interface SongTiming {
 
 type TimingOverrides = Record<string, Partial<Pick<TrackEntry, 'start' | 'bpm'>>>;
 
-export const trackSrc = (song: Song): string | null => TRACKS[song.id]?.file ?? null;
+/** URL of the song's recording, or null when it has none. */
+export const trackSrc = (song: Song): string | null => {
+  const file = TRACKS[song.id]?.file;
+  return file ? recordingUrl(file) : null;
+};
 
 function overrides(): TimingOverrides {
   const value = storage.read<unknown>(TIMING_KEY, {});

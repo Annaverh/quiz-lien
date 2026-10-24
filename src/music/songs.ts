@@ -1,4 +1,5 @@
-import { REST, type Song, type SongDefinition } from './types';
+import { parseStrumPattern } from './patterns';
+import { type Song, type SongDefinition } from './types';
 
 /**
  * Simplified arrangements in the style of each song. Progressions and patterns are
@@ -16,18 +17,22 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     capo: 2,
     beatsPerBar: 4,
     stepsPerBeat: 2,
-    pattern: ['D', REST, 'D', 'U', 'D', 'U', 'D', 'U'],
+    pattern: 'Dn Du Du Du',
     progression: [
-      ['Em7', 4],
-      ['G', 4],
-      ['Dsus4', 4],
-      ['A7sus4', 4],
+      ['Em7', 2],
+      ['G', 2],
+      ['Dsus4', 2],
+      ['A7sus4', 2],
+      ['Em7', 2],
+      ['G', 2],
+      ['Dsus4', 2],
+      ['A7sus4', 2],
     ],
     changeLevel: 2,
     howItsPlayed:
       'Druk, gelijkmatig slaan dat nooit stilvalt. Je hand gaat als een slinger op en neer, ook op de momenten dat hij de snaren mist.',
     listenFor:
-      'De twee dunste snaren blijven in elk akkoord hetzelfde, dus de akkoorden lopen in elkaar over. Let op de laagste noot: die verandert elke maat.',
+      'De twee dunste snaren blijven in elk akkoord hetzelfde, dus de akkoorden lopen in elkaar over. Let op de laagste noot: die verandert elke halve maat, en het rondje van vier akkoorden komt twee keer.',
   },
   {
     id: 'good-riddance',
@@ -64,7 +69,7 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     bpm: 69,
     beatsPerBar: 4,
     stepsPerBeat: 2,
-    pattern: ['D', REST, 'D', 'U', REST, 'U', 'D', 'U'],
+    pattern: 'Dn Du nu Du',
     progression: [
       ['G', 2],
       ['D', 2],
@@ -112,21 +117,24 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     year: 1977,
     era: 'Classic',
     technique: 'pick',
-    bpm: 96,
+    bpm: 93,
     beatsPerBar: 4,
-    stepsPerBeat: 2,
-    pattern: [['B', 5], 3, 'A', 4, 'B', 3, 'A', 4],
+    // Sixteenth notes: one full Travis cycle per chord.
+    stepsPerBeat: 4,
+    pattern: [['B', 5], 3, 'A', 4, 'B', 3, 'A', 4, ['B', 5], 3, 'A', 4, 'B', 3, 'A', 4],
     progression: [
-      ['C', 4],
-      ['Cmaj7', 4],
-      ['Cadd9', 4],
-      ['C', 4],
+      ['C', 2],
+      ['G/B', 2],
+      ['Am', 2],
+      ['G', 2],
+      ['Dm', 2],
+      ['Am', 2],
     ],
-    changeLevel: 3,
+    changeLevel: 2,
     howItsPlayed:
       'Travis picking: je duim wisselt tussen twee bassnaren, terwijl je vingers daartussen hogere snaren tokkelen. Het klinkt als twee gitaren tegelijk.',
     listenFor:
-      'Een lastige! De bas blijft hetzelfde en er verandert maar één hogere noot (op de B-snaar). Let op de 4e noot van elke maat.',
+      'Het couplet: C, G/B, Am, G, Dm, Am, elk twee tellen. De bas zakt stap voor stap; volg de laagste noot en je hoort elke wissel.',
   },
   {
     id: 'riptide',
@@ -139,7 +147,7 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     capo: 1,
     beatsPerBar: 4,
     stepsPerBeat: 2,
-    pattern: ['D', REST, 'D', REST, 'D', 'U', 'D', 'U'],
+    pattern: 'Dn Dn Du Du',
     progression: [
       ['Am', 2],
       ['G', 2],
@@ -164,7 +172,7 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     capo: 1,
     beatsPerBar: 2,
     stepsPerBeat: 3,
-    pattern: ['D', REST, 'D', 'U', 'D', 'U'],
+    pattern: 'DnD uDu',
     progression: [
       ['G', 4],
       ['Em', 4],
@@ -213,7 +221,7 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     bpm: 122,
     beatsPerBar: 4,
     stepsPerBeat: 2,
-    pattern: ['D', REST, 'D', 'U', 'D', REST, 'D', 'U'],
+    pattern: 'Dn Du Dn Du',
     progression: [
       ['Em', 4],
       ['D6/9', 4],
@@ -236,7 +244,7 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     bpm: 61,
     beatsPerBar: 4,
     stepsPerBeat: 2,
-    pattern: ['D', REST, 'D', 'U', REST, 'U', 'D', 'U'],
+    pattern: 'Dn Du nu Du',
     progression: [
       ['C', 4],
       ['D/F#', 4],
@@ -313,7 +321,7 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     capo: 4,
     beatsPerBar: 4,
     stepsPerBeat: 2,
-    pattern: ['D', REST, 'D', 'U', REST, 'U', 'D', 'U'],
+    pattern: 'Dn Du nu Du',
     progression: [
       ['G', 4],
       ['D', 4],
@@ -380,6 +388,7 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
 export const toSong = (definition: SongDefinition): Song =>
   Object.freeze({
     ...definition,
+    pattern: typeof definition.pattern === 'string' ? parseStrumPattern(definition.pattern) : definition.pattern,
     capo: definition.capo ?? 0,
     totalBeats: definition.progression.reduce((sum, [, beats]) => sum + beats, 0),
   });

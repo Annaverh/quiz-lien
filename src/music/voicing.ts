@@ -18,8 +18,17 @@ export interface Voice {
 
 const DOWN_STRUM_SPACING = 0.011;
 const UP_STRUM_SPACING = 0.009;
-const UP_STRUM_STRINGS = 3;
 const PINCH_SPACING = 0.004;
+
+/** How many strings each strum brushes (counted from the thinnest), and how hard. */
+const STRUMS = {
+  D: { direction: 'down', strings: 6, velocity: 0.95 },
+  d: { direction: 'down', strings: 4, velocity: 0.6 },
+  U: { direction: 'up', strings: 5, velocity: 0.75 },
+  u: { direction: 'up', strings: 3, velocity: 0.5 },
+} as const;
+type Strum = keyof typeof STRUMS;
+const isStrum = (token: StepToken): token is Strum => typeof token === 'string' && token in STRUMS;
 
 export const soundingStrings = (chord: Chord): StringIndex[] => STRING_INDICES.filter(s => chord.frets[s] !== MUTED);
 
@@ -30,30 +39,32 @@ export function resolvePickString(chord: Chord, target: PickString): StringIndex
 }
 
 export const isPinch = (token: StepToken): token is readonly PickString[] => typeof token === 'object';
-export const isStrumToken = (token: StepToken): boolean => token === 'D' || token === 'U' || token === REST;
+export const isStrumToken = (token: StepToken): boolean => isStrum(token) || token === REST;
+export const strumDirection = (token: StepToken): 'down' | 'up' | null =>
+  isStrum(token) ? STRUMS[token].direction : null;
+/** Big strums (D, U) are drawn larger in the tab than small ones (d, u). */
+export const isBigStrum = (token: StepToken): boolean => token === 'D' || token === 'U';
 
 /** The strings of `chord` sounded by one pattern step. */
 export function voiceStep(chord: Chord, token: StepToken, style: Style, onBeat: boolean): Voice[] {
   if (token === REST) return [];
   if (style === 'strum') {
-    const strings = soundingStrings(chord);
-    if (token === 'D') {
+    if (!isStrum(token)) return [];
+    const { direction, strings: count, velocity } = STRUMS[token];
+    const strings = soundingStrings(chord).slice(-count);
+    // A big down-strum on the beat is the accent of the bar.
+    const accent = token === 'D' && !onBeat ? 0.85 : 1;
+    if (direction === 'down') {
       return strings.map((string, k) => ({
         string,
         offset: k * DOWN_STRUM_SPACING,
-        velocity: (onBeat ? 0.95 : 0.78) * (1 - k * 0.025),
+        velocity: velocity * accent * (1 - k * 0.025),
       }));
     }
-    // An up-strum only brushes the thinner strings, from high to low.
-    if (token === 'U') {
-      return strings
-        .slice(-UP_STRUM_STRINGS)
-        .reverse()
-        .map((string, k) => ({ string, offset: k * UP_STRUM_SPACING, velocity: 0.55 }));
-    }
-    return [];
+    // Up-strums go from the thinnest string towards the thicker ones.
+    return strings.reverse().map((string, k) => ({ string, offset: k * UP_STRUM_SPACING, velocity }));
   }
-  if (token === 'D' || token === 'U') return [];
+  if (isStrum(token)) return [];
   return pickVoices(chord, token);
 }
 

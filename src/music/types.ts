@@ -16,16 +16,20 @@ export interface Chord {
 export const REST = '-';
 export type Rest = typeof REST;
 
-/** Strum tokens: down, up, or a rest where the hand keeps moving without hitting the strings. */
-export type StrumToken = 'D' | 'U' | Rest;
+/**
+ * Strum tokens: D big down-strum (all strings), d small down-strum (thin strings, softer),
+ * U big up-strum, u small up-strum (only the thinnest strings), or a rest where the hand
+ * keeps moving without hitting the strings.
+ */
+export type StrumToken = 'D' | 'd' | 'U' | 'u' | Rest;
 /** Pick targets: the chord's bass string, its alternate bass string, or a string index. */
 export type PickString = 'B' | 'A' | StringIndex;
 /** A single string, several plucked together (a pinch), or a rest. */
 export type PickToken = PickString | readonly PickString[] | Rest;
 export type StepToken = StrumToken | PickToken;
 
-/** Steps per beat: eighth notes in 4/4 (2) or in 6/8 felt as two beats per bar (3). */
-export type StepsPerBeat = 2 | 3;
+/** Steps per beat: eighth notes in 4/4 (2), sixteenth notes in 4/4 (4), or eighths in 6/8 felt as two beats per bar (3). */
+export type StepsPerBeat = 2 | 3 | 4;
 export type Era = 'Classic' | '90s' | 'Modern';
 
 export interface SongDefinition {
@@ -40,8 +44,12 @@ export interface SongDefinition {
   readonly capo?: number;
   readonly beatsPerBar: number;
   readonly stepsPerBeat: StepsPerBeat;
-  /** One bar of the song's own pattern; it repeats through the fragment. */
-  readonly pattern: readonly StepToken[];
+  /**
+   * One bar of the song's own pattern; it repeats through the fragment. Strumming is written
+   * as text, one letter per step: D/d big/small down, U/u big/small up, n nothing. Spaces are
+   * ignored, so 'Dn Du nu Du' reads as four beats. Picking is a list of pick tokens.
+   */
+  readonly pattern: string | readonly StepToken[];
   readonly progression: readonly (readonly [ChordName, number])[];
   /** How hard the chord changes are to hear, 1 (clear) to 3 (subtle). */
   readonly changeLevel: 1 | 2 | 3;
@@ -49,7 +57,8 @@ export interface SongDefinition {
   readonly listenFor: string;
 }
 
-export interface Song extends SongDefinition {
+export interface Song extends Omit<SongDefinition, 'pattern'> {
+  readonly pattern: readonly StepToken[];
   readonly capo: number;
   readonly totalBeats: number;
 }

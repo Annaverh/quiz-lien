@@ -20,6 +20,8 @@ export const CHORDS = {
   'D/F#': { frets: [2, X, 0, 2, 3, 2], bass: 0, alt: 2 },
   'G/B': { frets: [X, 2, 0, 0, 0, 3], bass: 1, alt: 2 },
   'F#m': { frets: [2, 4, 4, 2, 2, 2], bass: 0, alt: 2 },
+  // Only one bass string sounds, so the thumb stays on it.
+  Dm: { frets: [X, X, 0, 2, 3, 1], bass: 2, alt: 2 },
 } as const satisfies Record<string, Chord>;
 
 export type ChordName = keyof typeof CHORDS;

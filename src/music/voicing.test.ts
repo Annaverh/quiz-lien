@@ -12,10 +12,16 @@ describe('voiceStep', () => {
     expect(voices.map(v => v.offset)).toEqual([...voices.map(v => v.offset)].sort((a, b) => a - b));
   });
 
-  it('up-strums only the three thinnest strings, thin to thick, softer', () => {
-    const voices = voiceStep(c, 'U', 'strum', false);
+  it('small up-strums brush the three thinnest strings, thin to thick, softly', () => {
+    const voices = voiceStep(c, 'u', 'strum', false);
     expect(voices.map(v => v.string)).toEqual([5, 4, 3]);
     expect(Math.max(...voices.map(v => v.velocity))).toBeLessThan(voiceStep(c, 'D', 'strum', true)[0]!.velocity);
+  });
+
+  it('big strums cover more strings than small ones', () => {
+    expect(voiceStep(c, 'U', 'strum', false).map(v => v.string)).toEqual([5, 4, 3, 2, 1]);
+    expect(voiceStep(c, 'd', 'strum', false).map(v => v.string)).toEqual([2, 3, 4, 5]);
+    expect(voiceStep(chordFor('G'), 'D', 'strum', true)).toHaveLength(6);
   });
 
   it('plays nothing on a rest', () => {

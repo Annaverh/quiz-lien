@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { mulberry32 } from '../lib/random';
 import { SONGS, toSong } from '../music/songs';
 import { TRACKS } from './manifest';
+import { recordingUrl } from './recordings';
 import { fitBeats, songTiming } from './timing';
 
 describe('fitBeats', () => {
@@ -40,13 +41,10 @@ describe('songTiming', () => {
 
 describe('track manifest', () => {
   const ids = new Set(SONGS.map(s => s.id));
-  const recordings = new Set(
-    Object.keys(import.meta.glob('../../public/audio/*.mp3')).map(path => path.split('/public/')[1]),
-  );
 
   it.each(Object.entries(TRACKS))('%s points at an existing recording of a known song', (id, track) => {
     expect(ids.has(id)).toBe(true);
-    expect(recordings.has(track.file)).toBe(true);
+    expect(recordingUrl(track.file)).not.toBeNull();
     expect(track.start).toBeGreaterThanOrEqual(0);
   });
 

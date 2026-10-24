@@ -4,18 +4,19 @@ import { chordFor } from '../../music/chords';
 import { otherStyle, STRING_NAMES, STYLE_LABEL, STYLE_PARTICIPLE, TAB_STRING_ORDER } from '../../music/constants';
 import { countLabel } from '../../music/patterns';
 import { REST, type Song, type StepToken, type Style } from '../../music/types';
-import { pickTargets, resolvePickString, voiceStep } from '../../music/voicing';
+import { isBigStrum, pickTargets, resolvePickString, strumDirection, voiceStep } from '../../music/voicing';
 import { arrangeForPlayback, tuneToRecord } from '../../tracks/timing';
 import type { View } from '../types';
 import { createPlayButton, playSnippet } from './playButton';
 import { controlGroup, segmented, TEMPO_OPTIONS, type TempoValue } from './segmented';
 import { createTrackMixer } from './trackMixer';
 
-const ARROWS = { down: '↓', up: '↑', rest: '·' } as const;
+const ARROWS = { down: '↓', up: '↑' } as const;
+const STRUM_NAMES = { down: 'neerslag', up: 'opslag' } as const;
 
 const LEGEND: Readonly<Record<Style, string>> = {
   strum:
-    'Een grote ↓ is een neerslag over alle snaren. Een kleine ↑ is een lichtere opslag die alleen de dunne snaren raakt. Bij een puntje beweegt je hand mee maar mist hij de snaren. Klik op een kolom om hem te horen.',
+    'Een grote pijl is een volle slag over (bijna) alle snaren, een kleine pijl een lichte slag over alleen de dunne snaren. ↓ is een neerslag, ↑ een opslag. Bij een puntje beweegt je hand mee maar mist hij de snaren. Klik op een kolom om hem te horen.',
   pick: 'Elke lijn is een snaar, de dunste bovenaan. Het getal zegt welke fret je indrukt (0 = losse snaar); een gekleurd getal tokkel je op die tel. Er klinken maar één of twee snaren tegelijk. Klik op een kolom om hem te horen.',
 };
 
@@ -50,7 +51,8 @@ export function createPatternExplorer(song: Song, { showMixer = true } = {}): Vi
 
   function describe(step: Step): string {
     if (step.token === REST) return 'geen slag, hand beweegt mee';
-    if (style === 'strum') return `${step.token === 'D' ? 'neerslag' : 'opslag'} op ${step.chord}`;
+    const direction = strumDirection(step.token);
+    if (direction) return `${isBigStrum(step.token) ? 'grote' : 'kleine'} ${STRUM_NAMES[direction]} op ${step.chord}`;
     const chord = chordFor(step.chord);
     const strings = pickTargets(step.token).map(target => STRING_NAMES[resolvePickString(chord, target)]);
     return `tokkel de ${strings.join('- en ')}-${strings.length > 1 ? 'snaren' : 'snaar'} van ${step.chord}`;
@@ -58,8 +60,10 @@ export function createPatternExplorer(song: Song, { showMixer = true } = {}): Vi
 
   function stepBody(step: Step, onBeat: boolean): Node | Node[] {
     if (style === 'strum') {
-      const kind = step.token === 'D' ? 'down' : step.token === 'U' ? 'up' : 'rest';
-      return el('span', { class: `cell arrow ${kind}`, 'aria-hidden': 'true' }, ARROWS[kind]);
+      const direction = strumDirection(step.token);
+      if (!direction) return el('span', { class: 'cell arrow rest', 'aria-hidden': 'true' }, '·');
+      const size = isBigStrum(step.token) ? 'big' : 'small';
+      return el('span', { class: `cell arrow ${direction} ${size}`, 'aria-hidden': 'true' }, ARROWS[direction]);
     }
     const chord = chordFor(step.chord);
     const voices = voiceStep(chord, step.token, 'pick', onBeat);

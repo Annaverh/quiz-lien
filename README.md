@@ -43,7 +43,7 @@ src/
   music/                  Pure music model — no DOM, no audio
     chords.ts             Chord shapes
     songs.ts              Song library (progression, pattern, tempo, capo, teaching text)
-    patterns.ts           Fallback patterns and count labels
+    patterns.ts           Strum notation (D d U u n), fallback patterns and count labels
     voicing.ts            Which strings a strum or pick step sounds
     arrangement.ts        Song + options → timed note events, steps and chord changes
     validate.ts           Checks song data the type system can't
@@ -53,6 +53,7 @@ src/
     playback.ts           A running fragment: step reporting and clean stopping
   tracks/                 Real-song recordings
     manifest.ts           Which recordings exist, and where each fragment starts
+    recordings.ts         Content-hashed URLs of the bundled recordings
     timing.ts             Timing overrides, tap-tempo fitting, record-tempo arrangements
     mix.ts                Shared real-song volume
   quiz/                   Rounds, question selection, scoring and saved stats
@@ -61,8 +62,8 @@ src/
     components/           Play button, interactive tab, beat grid, mixer, sync tool…
     views/                Home, the two question types, summary and study pages
   styles/                 CSS split by area; design tokens in tokens.css
-public/
-  audio/                  Recordings of the real songs (see its README)
+  assets/audio/           Recordings of the real songs (see its README)
+public/                   Files served as they are (favicon)
 ```
 
 Dependencies only point downward: `ui` → `quiz`, `tracks`, `audio` → `music` → `lib`.
@@ -71,16 +72,29 @@ The `music` and `quiz` layers are pure and fully unit-tested.
 ## Adding a song
 
 1. Add any new chord shapes to `src/music/chords.ts`.
-2. Add the song to `SONG_DEFINITIONS` in `src/music/songs.ts`. The pattern is one bar long:
-   for strumming use `'D'`, `'U'` and `REST`; for picking use `'B'` (bass string), `'A'`
-   (alternate bass), a string index `0`–`5` (0 = low E), or an array for a pinch.
+2. Add the song to `SONG_DEFINITIONS` in `src/music/songs.ts`. The pattern is one bar long,
+   with one step per eighth note (`stepsPerBeat: 2`), sixteenth note (`4`) or 6/8 eighth (`3`).
+   - **Strumming** is written as text, one letter per step:
+
+     | Letter | Meaning                                     |
+     | ------ | ------------------------------------------- |
+     | `D`    | big down-strum: all strings, accented       |
+     | `d`    | small down-strum: the four thinnest, softer |
+     | `U`    | big up-strum: five strings                  |
+     | `u`    | small up-strum: only the three thinnest     |
+     | `n`    | nothing: the hand keeps moving but misses   |
+
+     Spaces and `|` are ignored, so group by beat: `pattern: 'Dn Du nu Du'`.
+
+   - **Picking** is a list: `'B'` (bass string), `'A'` (alternate bass), a string index
+     `0`–`5` (0 = low E), an array for a pinch such as `['B', 5]`, or `REST`.
 3. Run `npm test`. The library test catches patterns of the wrong length, half-filled bars
    and picks that land on a muted string.
 
 ## Adding a real recording
 
-See [`public/audio/README.md`](public/audio/README.md). In short: put the MP3 in
-`public/audio/`, list it in `src/tracks/manifest.ts`, then use **Origineel gelijkzetten**
+See [`src/assets/audio/README.md`](src/assets/audio/README.md). In short: put the MP3 in
+`src/assets/audio/`, list it in `src/tracks/manifest.ts`, then use **Origineel gelijkzetten**
 on the song's study page to find where the fragment starts and copy the line into the
 manifest. Only publish recordings you have the right to share.
 

@@ -4,6 +4,7 @@ import { el } from '../../lib/dom';
 import { errorMessage, notify } from '../../lib/notify';
 import type { Song } from '../../music/types';
 import { mix } from '../../tracks/mix';
+import { TRACKS } from '../../tracks/manifest';
 import { arrangeForPlayback, fitBeats, resetTiming, saveTiming, songTiming, trackSrc } from '../../tracks/timing';
 import type { View } from '../types';
 import { bindSpaceTap, pulse } from './keyboard';
@@ -72,7 +73,7 @@ export function createSyncPanel(song: Song): View {
   function render(): void {
     const timing = songTiming(song);
     readout.textContent = `Eerste akkoord op ${formatNumber(timing.start, 2)} s · ${formatNumber(timing.bpm, 1)} BPM${timing.isCustom ? ' (ingesteld in deze browser)' : ''}`;
-    copyBox.value = `'${song.id}': { file: '${trackSrc(song) ?? ''}', start: ${timing.start.toFixed(2)}, bpm: ${timing.bpm.toFixed(1)} },`;
+    copyBox.value = `'${song.id}': { file: '${TRACKS[song.id]?.file ?? `${song.id}.mp3`}', start: ${timing.start.toFixed(2)}, bpm: ${timing.bpm.toFixed(1)} },`;
   }
 
   async function listen(): Promise<void> {

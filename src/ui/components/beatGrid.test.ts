@@ -29,6 +29,10 @@ describe('createBeatGrid', () => {
       'G',
       'Dsus4',
       'A7sus4',
+      'Em7',
+      'G',
+      'Dsus4',
+      'A7sus4',
     ]);
 
     grid.showResult(scoreChanges([4, 8, 12], [4, 9]));

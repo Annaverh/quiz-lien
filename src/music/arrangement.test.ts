@@ -31,7 +31,7 @@ describe('arrange', () => {
     const result = arrange(song('wonderwall'));
     expect(result.totalSteps).toBe(32);
     expect(result.steps).toHaveLength(32);
-    expect(result.changes).toEqual([4, 8, 12]);
+    expect(result.changes).toEqual([2, 4, 6, 8, 10, 12, 14]);
     expect(result.duration).toBeCloseTo((16 * 60) / 87);
   });
 
