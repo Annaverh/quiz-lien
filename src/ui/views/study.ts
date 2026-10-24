@@ -46,7 +46,6 @@ export function studyView(app: AppActions, song: Song): View {
         ),
       ),
       songMeta(song, 'h2', 'study-h'),
-      el('h3', { class: 'eyebrow' }, 'Zo speel je het'),
       pattern.node,
     ),
     el(

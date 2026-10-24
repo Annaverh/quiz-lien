@@ -56,7 +56,7 @@ describe('song library', () => {
 
   it('reports a pattern of the wrong length and a half-filled bar', () => {
     const broken = toSong({
-      ...SONGS[0]!,
+      ...SONGS.find(s => s.id === 'knockin')!,
       id: 'short',
       pattern: ['D', REST, 'D'],
       progression: [

@@ -4,7 +4,7 @@ import type { NoteEvent, Song } from '../music/types';
 import { TRACKS, type TrackEntry } from './manifest';
 import { recordingUrl } from './recordings';
 
-const TIMING_KEY = 'quiz-lien/timing/v4';
+const TIMING_KEY = 'quiz-lien/timing/v5';
 
 export interface SongTiming {
   /** Second in the recording where the fragment starts. */

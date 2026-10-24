@@ -28,11 +28,18 @@ describe('chordSegments', () => {
 
 describe('arrange', () => {
   it('lays out one step per eighth note and finds the chord changes', () => {
-    const result = arrange(song('wonderwall'));
+    const result = arrange(song('knockin'));
     expect(result.totalSteps).toBe(32);
     expect(result.steps).toHaveLength(32);
+    expect(result.changes).toEqual([2, 4, 8, 10, 12]);
+    expect(result.duration).toBeCloseTo((16 * 60) / 69);
+  });
+
+  it('lays out sixteenth-note steps when a song asks for them', () => {
+    const result = arrange(song('wonderwall'));
+    expect(result.totalSteps).toBe(64);
+    expect(result.stepDur).toBeCloseTo(60 / 87 / 4);
     expect(result.changes).toEqual([2, 4, 6, 8, 10, 12, 14]);
-    expect(result.duration).toBeCloseTo((16 * 60) / 87);
   });
 
   it('starts the fragment after the count-in and clicks once per beat', () => {

@@ -6,6 +6,13 @@ import { storage } from './lib/storage';
  */
 for (const key of ['v1', 'mix/v1']) storage.migrate(`strum-pick-change/${key}`, `quiz-lien/${key}`);
 
-// Timing saved before the recordings were re-cut and measured points at the old clips.
-for (const key of ['strum-pick-change/timing/v1', 'quiz-lien/timing/v1', 'quiz-lien/timing/v2', 'quiz-lien/timing/v3'])
-  storage.remove(key);
+// Timing saved in the browser points at the clips of its day; every re-cut bumps the version
+// (see TIMING_KEY in tracks/timing.ts), and older versions are dropped here.
+const STALE_TIMINGS = [
+  'strum-pick-change/timing/v1',
+  'quiz-lien/timing/v1',
+  'quiz-lien/timing/v2',
+  'quiz-lien/timing/v3',
+  'quiz-lien/timing/v4',
+];
+for (const key of STALE_TIMINGS) storage.remove(key);

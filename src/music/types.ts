@@ -53,7 +53,6 @@ export interface SongDefinition {
   readonly progression: readonly (readonly [ChordName, number])[];
   /** How hard the chord changes are to hear, 1 (clear) to 3 (subtle). */
   readonly changeLevel: 1 | 2 | 3;
-  readonly howItsPlayed: string;
   readonly listenFor: string;
 }
 

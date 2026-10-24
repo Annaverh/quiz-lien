@@ -150,7 +150,6 @@ export function createPatternExplorer(song: Song, { showMixer = true } = {}): Vi
   const node = el(
     'div',
     { class: 'learn-body' },
-    el('p', {}, song.howItsPlayed),
     el(
       'div',
       { class: 'controls' },

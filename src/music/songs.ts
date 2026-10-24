@@ -16,8 +16,9 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     bpm: 87,
     capo: 2,
     beatsPerBar: 4,
-    stepsPerBeat: 2,
-    pattern: 'Dn Du Du Du',
+    // The record strums in sixteenths.
+    stepsPerBeat: 4,
+    pattern: 'DnDu nuDu DnDu nuDu',
     progression: [
       ['Em7', 2],
       ['G', 2],
@@ -29,8 +30,6 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
       ['A7sus4', 2],
     ],
     changeLevel: 2,
-    howItsPlayed:
-      'Druk, gelijkmatig slaan dat nooit stilvalt. Je hand gaat als een slinger op en neer, ook op de momenten dat hij de snaren mist.',
     listenFor:
       'De twee dunste snaren blijven in elk akkoord hetzelfde, dus de akkoorden lopen in elkaar over. Let op de laagste noot: die verandert elke halve maat, en het rondje van vier akkoorden komt twee keer.',
   },
@@ -46,18 +45,16 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     stepsPerBeat: 2,
     pattern: ['B', 3, 4, 3, 'B', 3, 4, 3],
     progression: [
-      ['G', 4],
+      ['G', 2],
       ['C', 2],
       ['D', 2],
       ['G', 4],
       ['C', 2],
       ['D', 2],
+      ['G', 2],
     ],
     changeLevel: 2,
-    howItsPlayed:
-      'Eén snaar tegelijk getokkeld: elke halve maat een basnoot, met daartussen losse hogere snaren. Elke noot heeft zijn eigen kleine aanslag.',
-    listenFor:
-      'G duurt een hele maat, daarna delen C en D de volgende maat, elk twee tellen. De tweede helft gaat dus sneller.',
+    listenFor: 'G, C en D wisselen elke twee tellen, behalve in het midden: daar blijft G een hele maat staan.',
   },
   {
     id: 'knockin',
@@ -79,8 +76,6 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
       ['C', 4],
     ],
     changeLevel: 1,
-    howItsPlayed:
-      'Rustig, ontspannen slaan met het bekende patroon "neer, neer-op, op-neer-op". Bij elke neerslag klinken alle snaren samen.',
     listenFor:
       'G en D krijgen elk twee tellen, daarna krijgt het mineurakkoord (Am7) een hele maat. Dat klinkt net iets droeviger.',
   },
@@ -105,8 +100,6 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
       ['E', 4],
     ],
     changeLevel: 1,
-    howItsPlayed:
-      'Een arpeggio: het akkoord klinkt noot voor noot, van de bas naar de dunne snaren en weer terug, in een rollende telling van zes.',
     listenFor:
       'Elke maat komt er een nieuw akkoord, behalve het laatste (E), dat twee maten blijft. Bij elke wissel springt de basnoot.',
   },
@@ -119,22 +112,19 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     technique: 'pick',
     bpm: 93,
     beatsPerBar: 4,
-    // Sixteenth notes: one full Travis cycle per chord.
-    stepsPerBeat: 4,
-    pattern: [['B', 5], 3, 'A', 4, 'B', 3, 'A', 4, ['B', 5], 3, 'A', 4, 'B', 3, 'A', 4],
+    stepsPerBeat: 2,
+    pattern: [['B', 5], 3, 'A', 4, 'B', 3, 'A', 4],
     progression: [
       ['C', 2],
       ['G/B', 2],
-      ['Am', 2],
+      ['Am', 4],
       ['G', 2],
       ['Dm', 2],
-      ['Am', 2],
+      ['Am', 4],
     ],
     changeLevel: 2,
-    howItsPlayed:
-      'Travis picking: je duim wisselt tussen twee bassnaren, terwijl je vingers daartussen hogere snaren tokkelen. Het klinkt als twee gitaren tegelijk.',
     listenFor:
-      'Het couplet: C, G/B, Am, G, Dm, Am, elk twee tellen. De bas zakt stap voor stap; volg de laagste noot en je hoort elke wissel.',
+      'Het couplet: C en G/B elk twee tellen, Am een hele maat, dan G en Dm elk twee tellen en weer een hele maat Am. De bas zakt stap voor stap; volg de laagste noot en je hoort elke wissel.',
   },
   {
     id: 'riptide',
@@ -157,8 +147,6 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
       ['C', 4],
     ],
     changeLevel: 1,
-    howItsPlayed:
-      'Vrolijk, verend slaan (het origineel is op ukelele). Korte, kortaf neerslagen met snelle opslagen aan het eind van elke maat.',
     listenFor: 'Am en G krijgen elk twee tellen, daarna krijgt C een hele maat. Dat patroon komt twee keer.',
   },
   {
@@ -180,8 +168,6 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
       ['D', 4],
     ],
     changeLevel: 1,
-    howItsPlayed:
-      'Zacht slaan in een wiegende telling van zes (6/8-maat), als een langzame wals. Tel "1 2 3 4 5 6" en sla neer op 1.',
     listenFor: 'Elk akkoord duurt twee maten, dus vier grote, wiegende tellen: G, Em, C, D.',
   },
   {
@@ -207,8 +193,6 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
       ['G', 2],
     ],
     changeLevel: 1,
-    howItsPlayed:
-      'Zacht fingerpicking: een basnoot, dan de drie dunste snaren één voor één omhoog. Een capo op de 7e fret maakt het helder en hoog.',
     listenFor: 'Elke halve maat een nieuw akkoord: Am, F, C, G. Elke wissel begint met een nieuwe basnoot.',
   },
   {
@@ -229,8 +213,6 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
       ['D6/9', 4],
     ],
     changeLevel: 2,
-    howItsPlayed:
-      'Stuwend, gelijkmatig slaan dat nooit stopt. De meeste snaren blijven los, dus het galmt als een bromtoon.',
     listenFor:
       'Twee akkoorden die bijna alle noten delen. Alleen de bas beweegt (van E omhoog naar F#), één keer per maat.',
   },
@@ -252,8 +234,6 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
       ['G', 4],
     ],
     changeLevel: 1,
-    howItsPlayed:
-      'Langzaam, open slaan dat elk akkoord laat doorklinken. Er zit veel ruimte tussen de slagen, dus je hoort het ritme goed.',
     listenFor: 'Eén akkoord per maat, en de bas wandelt elke keer een stukje: C, dan F#, dan A, dan G.',
   },
   {
@@ -279,8 +259,6 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
       ['G/B', 2],
     ],
     changeLevel: 2,
-    howItsPlayed:
-      'Travis picking met een capo op de 3e fret: je duim wisselt tussen de bassnaren, terwijl je vingers daartussen de hogere snaren tokkelen.',
     listenFor:
       'Elke halve maat zakt de bas één noot: C, B, A en dan terug naar B. Volg de laagste noot en je hoort elke wissel.',
   },
@@ -306,8 +284,6 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
       ['G', 2],
     ],
     changeLevel: 1,
-    howItsPlayed:
-      'Een langzaam arpeggio in een telling van zes: één basnoot, dan omhoog langs de dunne snaren en weer terug, noot voor noot.',
     listenFor: 'Eerst wisselen C en Am elke maat; Am klinkt donkerder. Later komen F en G erbij en klimt de bas.',
   },
   {
@@ -329,8 +305,6 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
       ['C', 4],
     ],
     changeLevel: 1,
-    howItsPlayed:
-      'Relaxed, verend slaan met een capo op de 4e fret. De opslagen tussen de tellen geven het een losse, reggae-achtige swing.',
     listenFor: 'De bekende vier akkoorden, één per maat: G, D, Em, C. Em is de enige die droevig klinkt.',
   },
   {
@@ -351,7 +325,6 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
       ['F#m', 4],
     ],
     changeLevel: 1,
-    howItsPlayed: 'Zacht fingerpicking: de basnoot, dan de drie dunne snaren omhoog, steeds opnieuw.',
     listenFor:
       'Maar twee akkoorden, die elke maat wisselen. F#m klinkt lager en donkerder dan D, omdat de basnoot op de dikste snaar ligt.',
   },
@@ -378,8 +351,6 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
       ['Dsus4', 2],
     ],
     changeLevel: 2,
-    howItsPlayed:
-      'Een getokkeld riffje met een capo op de 2e fret. Losse noten lopen op en neer door elk akkoord, als een klein melodietje.',
     listenFor:
       'Elke twee tellen een nieuw akkoord. De dunste twee snaren veranderen nauwelijks, dus luister naar de bas: die beweegt op tel 1 en tel 3 van elke maat.',
   },

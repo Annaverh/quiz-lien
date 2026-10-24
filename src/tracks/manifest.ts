@@ -16,13 +16,13 @@ export interface TrackEntry {
  * See src/assets/audio/README.md.
  */
 export const TRACKS: Readonly<Record<string, TrackEntry>> = {
-  wonderwall: { file: 'wonderwall.mp3', start: 5.0, bpm: 87.11, cents: 5 },
-  'good-riddance': { file: 'good-riddance.mp3', start: 1.62, bpm: 96.19, cents: 9 },
+  wonderwall: { file: 'wonderwall.mp3', start: 5.0, bpm: 87.04, cents: 5 },
+  'good-riddance': { file: 'good-riddance.mp3', start: 2.87, bpm: 96.16, cents: 9 },
   knockin: { file: 'knockin.mp3', start: 5.0, bpm: 69.87, cents: 3 },
   'rising-sun': { file: 'rising-sun.mp3', start: 5.0, bpm: 81.84, cents: 28 },
-  'dust-wind': { file: 'dust-wind.mp3', start: 5.0, bpm: 93.87 },
-  riptide: { file: 'riptide.mp3', start: 5.0, bpm: 101.16, cents: -31 },
-  perfect: { file: 'perfect.mp3', start: 5.0, bpm: 63.37, cents: 2 },
+  'dust-wind': { file: 'dust-wind.mp3', start: 5.0, bpm: 93.72 },
+  riptide: { file: 'riptide.mp3', start: 5.0, bpm: 100.73, cents: -31 },
+  perfect: { file: 'perfect.mp3', start: 5.0, bpm: 63.41, cents: 2 },
   'let-her-go': { file: 'let-her-go.mp3', start: 5.0, bpm: 75.0, cents: 18 },
   horse: { file: 'horse.mp3', start: 5.0, bpm: 119.55, cents: -17 },
   'wish-you-were-here': { file: 'wish-you-were-here.mp3', start: 5.0, bpm: 60.84, cents: 12 },
@@ -30,5 +30,5 @@ export const TRACKS: Readonly<Record<string, TrackEntry>> = {
   hallelujah: { file: 'hallelujah.mp3', start: 5.0, bpm: 53.75, cents: 1 },
   'im-yours': { file: 'im-yours.mp3', start: 5.0, bpm: 75.24, cents: -4 },
   delilah: { file: 'delilah.mp3', start: 5.0, bpm: 104.12, cents: 5 },
-  'fast-car': { file: 'fast-car.mp3', start: 5.0, bpm: 100.21, cents: 7 },
+  'fast-car': { file: 'fast-car.mp3', start: 5.0, bpm: 102.97, cents: 7 },
 };

@@ -11,6 +11,9 @@ const SOLO_TRACK_LEVEL = 0.7;
 /** Maps the 0–1 slider to gain with a perceptual curve; records are mastered far louder than the synth. */
 export const trackGain = (level: number): number => 0.85 * level * level;
 
+/** As the real song gets louder, the app guitar steps back, so the record stays audible over it. */
+export const guitarDuck = (level: number): number => 1 - 0.55 * level;
+
 /** Fetches and decodes an audio file; resolves to null when it is missing or unreadable. */
 async function fetchTrack(src: string): Promise<AudioBuffer | null> {
   try {
@@ -30,6 +33,8 @@ export class GuitarEngine {
   #guitarInput: AudioNode | null = null;
   #trackInput: GainNode | null = null;
   #trackLevel = 0.5;
+  /** The guitar bus of a fragment playing with a recording; it follows the real-song slider. */
+  #duckedBus: GainNode | null = null;
   readonly #noteBuffers = new Map<number, AudioBuffer>();
   readonly #tracks = new Map<string, Promise<AudioBuffer | null>>();
   #current: Playback | null = null;
@@ -40,6 +45,9 @@ export class GuitarEngine {
     this.stop();
     const guitarBus = ctx.createGain();
     guitarBus.connect(this.#guitarInput as AudioNode);
+    const withRecord = Boolean(playable.track) && !playable.track?.solo;
+    if (withRecord) guitarBus.gain.value = guitarDuck(this.#trackLevel);
+    this.#duckedBus = withRecord ? guitarBus : null;
     const trackBus = ctx.createGain();
     if (playable.track?.solo) {
       trackBus.gain.value = SOLO_TRACK_LEVEL;
@@ -70,6 +78,7 @@ export class GuitarEngine {
   stop(): void {
     this.#current?.stop();
     this.#current = null;
+    this.#duckedBus = null;
   }
 
   /** Loads a recording once; every view of a song shares the same download. */
@@ -86,9 +95,10 @@ export class GuitarEngine {
   /** Real-song volume (0–1), applied live to whatever is playing. */
   setTrackLevel(level: number): void {
     this.#trackLevel = level;
-    if (this.#ctx && this.#trackInput) {
-      this.#trackInput.gain.setTargetAtTime(trackGain(level), this.#ctx.currentTime, 0.03);
-    }
+    if (!this.#ctx) return;
+    const now = this.#ctx.currentTime;
+    this.#trackInput?.gain.setTargetAtTime(trackGain(level), now, 0.03);
+    this.#duckedBus?.gain.setTargetAtTime(guitarDuck(level), now, 0.03);
   }
 
   async #context(): Promise<AudioContext> {
