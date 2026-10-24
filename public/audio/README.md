@@ -27,8 +27,8 @@ Each file must also be listed in `TRACKS` in [`src/tracks/manifest.ts`](../../sr
 ```
 
 `start` is the second in the file where the song's first chord begins (Em7 for Wonderwall).
-To find it (and the exact tempo), open the song's Study page, open
-"Line up the real song (for teachers)", tap along, then use "Copy timing" and paste the
+To find it (and the exact tempo), open the song's study page ("Oefenen"), open
+"Origineel gelijkzetten (voor docenten)", tap along, then use "Kopieer timing" and paste the
 line into `TRACKS`.
 
 Tips:

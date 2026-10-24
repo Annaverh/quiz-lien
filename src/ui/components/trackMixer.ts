@@ -37,17 +37,21 @@ export function createTrackMixer(song: Song, { visible = true } = {}): TrackMixe
   const sliderRow = el(
     'div',
     { class: 'mixer' },
-    el('label', { for: id }, 'Real song'),
+    el('label', { for: id }, 'Origineel'),
     slider,
     output,
-    el('span', { class: 'hint' }, 'The recording plays under the app guitar. Slide to the left to hear only the app.'),
+    el(
+      'span',
+      { class: 'hint' },
+      'De opname speelt onder de gitaar van de app. Schuif naar links om alleen de app te horen.',
+    ),
   );
-  const slowNote = el('p', { class: 'hint' }, 'The real song plays along at song speed only.');
+  const slowNote = el('p', { class: 'hint' }, 'Het origineel speelt alleen mee op normaal tempo.');
   const node = el('div', { class: 'mixer-wrap' }, sliderRow, slowNote);
 
   const render = (level: number): void => {
     slider.value = String(Math.round(level * 100));
-    output.textContent = level === 0 ? 'Off' : `${Math.round(level * 100)}%`;
+    output.textContent = level === 0 ? 'Uit' : `${Math.round(level * 100)}%`;
   };
   const unsubscribe = mix.subscribe(render);
   render(mix.level);

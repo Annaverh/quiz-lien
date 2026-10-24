@@ -19,7 +19,7 @@ export function createChangeExplorer(song: Song, grid: BeatGrid, { showMixer = t
   const mixer = createTrackMixer(song, { visible: showMixer });
 
   const player = createPlayButton({
-    label: 'Play with change bells',
+    label: 'Speel met wisselbel',
     getPlayable: () => ({
       ...arrangeForPlayback(song, { tempo: Number(tempo), chime }),
       track: mixer.trackFor(Number(tempo)),
@@ -42,12 +42,12 @@ export function createChangeExplorer(song: Song, grid: BeatGrid, { showMixer = t
         {
           type: 'button',
           class: 'chord-chip',
-          'aria-label': `Hear ${name}`,
+          'aria-label': `Luister naar ${name}`,
           onClick: () => playSnippet(snippetForChord(song, name)),
         },
         chordDiagram(name),
         el('strong', {}, name),
-        el('small', {}, 'Tap to hear'),
+        el('small', {}, 'Tik om te horen'),
       );
       chips.set(name, chip);
       return chip;
@@ -74,10 +74,10 @@ export function createChangeExplorer(song: Song, grid: BeatGrid, { showMixer = t
             chime = (event.target as HTMLInputElement).checked;
           },
         }),
-        'Ring a bell on each change',
+        'Bel bij elke wissel',
       ),
       controlGroup(
-        'Speed',
+        'Tempo',
         segmented(TEMPO_OPTIONS, tempo, value => {
           tempo = value;
           mixer.setTempo(Number(value));
@@ -88,7 +88,7 @@ export function createChangeExplorer(song: Song, grid: BeatGrid, { showMixer = t
     el(
       'p',
       { class: 'hint' },
-      'Hear each chord on its own. Notice how the lowest note is different for each one: that is the easiest thing to listen for.',
+      'Luister naar elk akkoord apart. Elk akkoord heeft een andere laagste noot, en daar hoor je de wissel het makkelijkst aan.',
     ),
     chordShelf,
   );

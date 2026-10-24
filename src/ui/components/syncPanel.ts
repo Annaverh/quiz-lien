@@ -14,6 +14,10 @@ const MIN_TAPS = 4;
 /** Taps further than this from the arrangement's tempo were probably half or double time. */
 const TEMPO_TOLERANCE = { low: 0.75, high: 1.33 };
 
+/** Dutch decimal comma for display; the manifest line keeps JavaScript's decimal point. */
+const formatNumber = (value: number, digits: number): string =>
+  value.toLocaleString('nl-NL', { minimumFractionDigits: digits, maximumFractionDigits: digits });
+
 /**
  * Teacher tool: find where the fragment starts in a recording, and the record's tempo,
  * by tapping along. Saves to this browser and produces a line for the track manifest.
@@ -31,7 +35,7 @@ export function createSyncPanel(song: Song): View {
   const copyBox = el('input', {
     class: 'copy-box',
     readOnly: true,
-    'aria-label': 'Timing line to copy',
+    'aria-label': 'Timingregel om te kopiëren',
     onFocus: (event: Event) => (event.target as HTMLInputElement).select(),
   });
   const tapButton = el(
@@ -45,17 +49,17 @@ export function createSyncPanel(song: Song): View {
         tap();
       },
     },
-    'Beat',
-    el('small', {}, 'Tap here, or press the space bar, on every beat'),
+    'Tel',
+    el('small', {}, 'Tik hier of druk op de spatiebalk, op elke tel'),
   );
   const startButton = el(
     'button',
     { type: 'button', class: 'btn', onClick: () => (playback ? finish() : void listen()) },
-    'Start tapping',
+    'Begin met tikken',
   );
 
   const together = createPlayButton({
-    label: 'Hear it together',
+    label: 'Samen afspelen',
     getPlayable: () => ({
       ...arrangeForPlayback(song),
       track: buffer ? { buffer, start: songTiming(song).start } : null,
@@ -67,7 +71,7 @@ export function createSyncPanel(song: Song): View {
 
   function render(): void {
     const timing = songTiming(song);
-    readout.textContent = `First chord at ${timing.start.toFixed(2)} s · ${timing.bpm.toFixed(1)} BPM${timing.isCustom ? ' (set in this browser)' : ''}`;
+    readout.textContent = `Eerste akkoord op ${formatNumber(timing.start, 2)} s · ${formatNumber(timing.bpm, 1)} BPM${timing.isCustom ? ' (ingesteld in deze browser)' : ''}`;
     copyBox.value = `'${song.id}': { file: '${trackSrc(song) ?? ''}', start: ${timing.start.toFixed(2)}, bpm: ${timing.bpm.toFixed(1)} },`;
   }
 
@@ -84,11 +88,11 @@ export function createSyncPanel(song: Song): View {
           },
         },
       );
-      startButton.textContent = 'Finish';
+      startButton.textContent = 'Klaar';
       tapButton.disabled = false;
-      status.textContent = `Playing from ${from.toFixed(1)} s. Tap on every beat, starting exactly when ${firstChord} begins. Tap 8 beats or more, then press Finish.`;
+      status.textContent = `Speelt vanaf ${formatNumber(from, 1)} s. Tik op elke tel, precies vanaf het moment dat ${firstChord} begint. Tik minstens 8 tellen en druk dan op Klaar.`;
     } catch (error) {
-      notify(errorMessage(error, 'Sound could not start.'));
+      notify(errorMessage(error, 'Het geluid kon niet starten.'));
     }
   }
 
@@ -96,29 +100,29 @@ export function createSyncPanel(song: Song): View {
     if (!playback) return;
     taps.push(from + playback.position);
     pulse(tapButton);
-    status.textContent = `${taps.length} ${taps.length === 1 ? 'tap' : 'taps'}. Keep going, then press Finish.`;
+    status.textContent = `${taps.length} ${taps.length === 1 ? 'tik' : 'tikken'}. Ga door en druk dan op Klaar.`;
   }
 
   function finish(): void {
     const current = playback;
     playback = null; // cleared first, so the stop below doesn't re-enter through onEnd
     current?.stop();
-    startButton.textContent = 'Start tapping';
+    startButton.textContent = 'Begin met tikken';
     tapButton.disabled = true;
 
     if (taps.length < MIN_TAPS) {
-      status.textContent = 'Not enough taps to work out the timing. Try again and tap at least 8 beats.';
+      status.textContent = 'Te weinig tikken om de timing te bepalen. Probeer het opnieuw en tik minstens 8 tellen.';
       return;
     }
     const fit = fitBeats(taps);
     const ratio = fit.bpm / song.bpm;
     if (!(ratio > TEMPO_TOLERANCE.low && ratio < TEMPO_TOLERANCE.high)) {
-      status.textContent = `Those taps were about ${Math.round(fit.bpm)} BPM, but this song expects about ${song.bpm}. Tap once per beat and try again.`;
+      status.textContent = `Je tikte ongeveer ${Math.round(fit.bpm)} BPM, maar dit nummer zit rond ${song.bpm}. Tik één keer per tel en probeer het opnieuw.`;
       return;
     }
     saveTiming(song, fit);
     render();
-    status.textContent = `Saved. Your taps were within ${Math.round(fit.spread * 1000)} ms of a steady beat. Press "Hear it together" to check, and nudge if needed.`;
+    status.textContent = `Opgeslagen. Je tikken zaten binnen ${Math.round(fit.spread * 1000)} ms van een vaste tel. Druk op "Samen afspelen" om te controleren en schuif bij als dat nodig is.`;
   }
 
   function nudge(deltaStart: number, deltaBpm: number): void {
@@ -134,11 +138,11 @@ export function createSyncPanel(song: Song): View {
   async function copy(): Promise<void> {
     try {
       await navigator.clipboard.writeText(copyBox.value);
-      status.textContent = 'Copied. Paste it into src/tracks/manifest.ts to make it the default for every learner.';
+      status.textContent = 'Gekopieerd. Plak de regel in src/tracks/manifest.ts om hem voor iedereen in te stellen.';
     } catch {
       copyBox.focus();
       copyBox.select();
-      status.textContent = 'Press Ctrl+C (or Cmd+C) to copy the selected line.';
+      status.textContent = 'Druk op Ctrl+C (of Cmd+C) om de geselecteerde regel te kopiëren.';
     }
   }
 
@@ -148,14 +152,14 @@ export function createSyncPanel(song: Song): View {
   const node = el(
     'details',
     { class: 'learn', hidden: true },
-    el('summary', {}, 'Line up the real song (for teachers)'),
+    el('summary', {}, 'Origineel gelijkzetten (voor docenten)'),
     el(
       'div',
       { class: 'learn-body sync' },
       el(
         'p',
         { class: 'hint' },
-        `Do this once per recording so it plays in time with the app guitar. Start tapping, then tap on every beat from the moment ${firstChord} begins. The setting is saved in this browser.`,
+        `Doe dit één keer per opname, zodat die gelijk loopt met de gitaar van de app. Begin met tikken en tik op elke tel vanaf het moment dat ${firstChord} begint. De instelling wordt in deze browser bewaard.`,
       ),
       readout,
       el('div', { class: 'action-row' }, startButton, together.node),
@@ -164,24 +168,24 @@ export function createSyncPanel(song: Song): View {
       el(
         'div',
         { class: 'nudges' },
-        el('span', { class: 'seg-label' }, 'Song starts'),
-        nudgeButton('Earlier −0.1 s', -0.1, 0),
-        nudgeButton('−0.02 s', -0.02, 0),
-        nudgeButton('+0.02 s', 0.02, 0),
-        nudgeButton('Later +0.1 s', 0.1, 0),
+        el('span', { class: 'seg-label' }, 'Start'),
+        nudgeButton('Eerder −0,1 s', -0.1, 0),
+        nudgeButton('−0,02 s', -0.02, 0),
+        nudgeButton('+0,02 s', 0.02, 0),
+        nudgeButton('Later +0,1 s', 0.1, 0),
       ),
       el(
         'div',
         { class: 'nudges' },
         el('span', { class: 'seg-label' }, 'Tempo'),
-        nudgeButton('−0.5 BPM', 0, -0.5),
-        nudgeButton('+0.5 BPM', 0, 0.5),
+        nudgeButton('−0,5 BPM', 0, -0.5),
+        nudgeButton('+0,5 BPM', 0, 0.5),
       ),
       el(
         'div',
         { class: 'action-row' },
         copyBox,
-        el('button', { type: 'button', class: 'btn small', onClick: () => void copy() }, 'Copy timing'),
+        el('button', { type: 'button', class: 'btn small', onClick: () => void copy() }, 'Kopieer timing'),
         el(
           'button',
           {
@@ -190,7 +194,7 @@ export function createSyncPanel(song: Song): View {
             onClick: () => {
               resetTiming(song);
               render();
-              status.textContent = 'Back to the default timing.';
+              status.textContent = 'Terug naar de standaardtiming.';
             },
           },
           'Reset',

@@ -33,7 +33,7 @@ export function chordDiagram(name: ChordName): SVGSVGElement {
 
   return svgEl(
     'svg',
-    { class: 'diagram', viewBox: '0 0 58 72', role: 'img', 'aria-label': `${name} chord shape` },
+    { class: 'diagram', viewBox: '0 0 58 72', role: 'img', 'aria-label': `Greep van ${name}` },
     parts,
   );
 }

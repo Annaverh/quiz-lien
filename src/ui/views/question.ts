@@ -3,20 +3,20 @@ import { MODES, type QuestionKind } from '../../quiz/modes';
 import type { Round } from '../../quiz/round';
 import type { AppActions } from '../types';
 
-/** "Question 2 of 6 · Strum or pick?" plus the spoiler note. */
+/** "Vraag 2 van 6 · Slaan of tokkelen?" plus the spoiler note. */
 export const questionKicker = (round: Round, kind: QuestionKind): HTMLElement =>
   el(
     'div',
     { class: 'q-kicker' },
-    el('span', { class: 'eyebrow' }, `Question ${round.index + 1} of ${round.questions.length} · ${MODES[kind].title}`),
-    el('span', { class: 'chip' }, 'Song revealed after you answer'),
+    el('span', { class: 'eyebrow' }, `Vraag ${round.index + 1} van ${round.questions.length} · ${MODES[kind].title}`),
+    el('span', { class: 'hint' }, 'Welk nummer het is, zie je na je antwoord'),
   );
 
 export const nextButton = (app: AppActions, round: Round): HTMLElement =>
   el(
     'button',
     { type: 'button', class: 'btn primary', onClick: () => app.nextQuestion() },
-    round.isLast ? 'See my score' : 'Next question',
+    round.isLast ? 'Bekijk mijn score' : 'Volgende vraag',
   );
 
 export type BannerTone = 'good' | 'near' | 'bad';

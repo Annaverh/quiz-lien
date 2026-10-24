@@ -24,7 +24,7 @@ export function createBeatGrid(song: Song, { onToggle }: { onToggle?: (beat: num
     for (let k = 0; k < song.beatsPerBar; k++) {
       const beat = bar * song.beatsPerBar + k;
       const isStart = beat === 0;
-      const label = `Bar ${bar + 1}, beat ${k + 1}`;
+      const label = `Maat ${bar + 1}, tel ${k + 1}`;
       const content = [
         el('span', { class: 'tag' }),
         el('span', { class: 'num' }, String(k + 1)),
@@ -49,7 +49,7 @@ export function createBeatGrid(song: Song, { onToggle }: { onToggle?: (beat: num
               {
                 class: className,
                 role: 'img',
-                'aria-label': isStart ? `${label}: the first chord starts here` : label,
+                'aria-label': isStart ? `${label}: hier begint het eerste akkoord` : label,
               },
               content,
             );
@@ -116,9 +116,9 @@ export function changeLegend(): HTMLElement {
   return el(
     'div',
     { class: 'legend' },
-    item('var(--good)', 'Right on the change'),
-    item('var(--near)', 'One beat off (still counts)'),
-    item('var(--bad)', 'Missed change', true),
-    item('var(--bad)', 'No change there'),
+    item('var(--good)', 'Precies op de wissel'),
+    item('var(--near)', 'Eén tel ernaast (telt mee)'),
+    item('var(--bad)', 'Gemiste wissel', true),
+    item('var(--bad)', 'Daar was geen wissel'),
   );
 }

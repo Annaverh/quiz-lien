@@ -35,11 +35,11 @@ export function segmented<T extends string>(
 export type TempoValue = '0.5' | '0.75' | '1';
 
 export const TEMPO_OPTIONS: readonly SegmentOption<TempoValue>[] = [
-  { value: '0.5', label: 'Slow' },
-  { value: '0.75', label: 'Medium' },
-  { value: '1', label: 'Song speed' },
+  { value: '0.5', label: 'Langzaam' },
+  { value: '0.75', label: 'Gemiddeld' },
+  { value: '1', label: 'Normaal' },
 ];
 
-/** A labelled group: "Speed [Slow | Medium | Song speed]". */
+/** A labelled group: "Tempo [Langzaam | Gemiddeld | Normaal]". */
 export const controlGroup = (label: string, control: Node): HTMLElement =>
   el('div', { class: 'control-group' }, el('span', { class: 'seg-label' }, label), control);

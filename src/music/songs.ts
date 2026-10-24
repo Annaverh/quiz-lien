@@ -25,9 +25,9 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     ],
     changeLevel: 2,
     howItsPlayed:
-      'Busy, steady strumming that keeps going all the time. Your hand moves down and up like a pendulum, even on the moments it misses the strings.',
+      'Druk, gelijkmatig slaan dat nooit stilvalt. Je hand gaat als een slinger op en neer, ook op de momenten dat hij de snaren mist.',
     listenFor:
-      'The two thinnest strings stay the same in every chord, so the chords blend together. Listen to the lowest note: it moves every bar.',
+      'De twee dunste snaren blijven in elk akkoord hetzelfde, dus de akkoorden lopen in elkaar over. Let op de laagste noot: die verandert elke maat.',
   },
   {
     id: 'good-riddance',
@@ -50,9 +50,9 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     ],
     changeLevel: 2,
     howItsPlayed:
-      'Picked one string at a time: a bass note, then single higher strings in between. Every note has its own little attack.',
+      'Eén snaar tegelijk getokkeld: een basnoot, met daartussen losse hogere snaren. Elke noot heeft zijn eigen kleine aanslag.',
     listenFor:
-      'G lasts a whole bar, then C and D share the next bar, two beats each. The second half of the bar moves faster.',
+      'G duurt een hele maat, daarna delen C en D de volgende maat, elk twee tellen. De tweede helft gaat dus sneller.',
   },
   {
     id: 'knockin',
@@ -75,8 +75,9 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     ],
     changeLevel: 1,
     howItsPlayed:
-      'Slow, relaxed strumming with the classic "down, down-up, up-down-up" pattern. All strings ring together on every down-strum.',
-    listenFor: 'G and D get two beats each, then the minor chord (Am7) gets a full bar and sounds a bit sadder.',
+      'Rustig, ontspannen slaan met het bekende patroon "neer, neer-op, op-neer-op". Bij elke neerslag klinken alle snaren samen.',
+    listenFor:
+      'G en D krijgen elk twee tellen, daarna krijgt het mineurakkoord (Am7) een hele maat. Dat klinkt net iets droeviger.',
   },
   {
     id: 'rising-sun',
@@ -100,9 +101,9 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     ],
     changeLevel: 1,
     howItsPlayed:
-      'An arpeggio: the chord is played one note at a time, from the bass up to the thin strings and back down, in a rolling count of six.',
+      'Een arpeggio: het akkoord klinkt noot voor noot, van de bas naar de dunne snaren en weer terug, in een rollende telling van zes.',
     listenFor:
-      'A new chord arrives on every bar, except the last chord (E), which stays for two bars. The bass note jumps on each change.',
+      'Elke maat komt er een nieuw akkoord, behalve het laatste (E), dat twee maten blijft. Bij elke wissel springt de basnoot.',
   },
   {
     id: 'dust-wind',
@@ -123,9 +124,9 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     ],
     changeLevel: 3,
     howItsPlayed:
-      'Travis picking: the thumb rocks between two bass strings while the fingers pluck higher strings in between. It sounds like two guitars at once.',
+      'Travis picking: je duim wisselt tussen twee bassnaren, terwijl je vingers daartussen hogere snaren tokkelen. Het klinkt als twee gitaren tegelijk.',
     listenFor:
-      'A tricky one! The bass stays the same and only one higher note moves (on the B string). Listen to the 4th note of each bar.',
+      'Een lastige! De bas blijft hetzelfde en er verandert maar één hogere noot (op de B-snaar). Let op de 4e noot van elke maat.',
   },
   {
     id: 'riptide',
@@ -149,8 +150,8 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     ],
     changeLevel: 1,
     howItsPlayed:
-      'Bright, bouncy strumming (the original is on ukulele). Short and choppy down-strums with quick up-strums at the end of each bar.',
-    listenFor: 'Am and G get two beats each, then C gets a full bar. The pattern of changes repeats twice.',
+      'Vrolijk, verend slaan (het origineel is op ukelele). Korte, kortaf neerslagen met snelle opslagen aan het eind van elke maat.',
+    listenFor: 'Am en G krijgen elk twee tellen, daarna krijgt C een hele maat. Dat patroon komt twee keer.',
   },
   {
     id: 'perfect',
@@ -176,8 +177,8 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     ],
     changeLevel: 1,
     howItsPlayed:
-      'Gentle strumming in a swaying count of six (6/8 time), like a slow waltz. Count "1 2 3 4 5 6" and strum down on 1.',
-    listenFor: 'Every bar has a new chord. Each bar is two big swaying beats.',
+      'Zacht slaan in een wiegende telling van zes (6/8-maat), als een langzame wals. Tel "1 2 3 4 5 6" en sla neer op 1.',
+    listenFor: 'Elke maat een nieuw akkoord. Een maat bestaat uit twee grote, wiegende tellen.',
   },
   {
     id: 'let-her-go',
@@ -199,8 +200,8 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     ],
     changeLevel: 1,
     howItsPlayed:
-      'Soft fingerpicking: a bass note, then the three thinnest strings one by one, rolling upward. A capo on the 7th fret makes it bright and high.',
-    listenFor: 'One chord per bar. Each bass note at the start of a bar is a new chord.',
+      'Zacht fingerpicking: een basnoot, dan de drie dunste snaren één voor één omhoog. Een capo op de 7e fret maakt het helder en hoog.',
+    listenFor: 'Eén akkoord per maat. Elke basnoot aan het begin van een maat is een nieuw akkoord.',
   },
   {
     id: 'horse',
@@ -220,8 +221,10 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
       ['D6/9', 4],
     ],
     changeLevel: 2,
-    howItsPlayed: 'Driving, even strumming that never stops. Most of the strings stay open, so it rings like a drone.',
-    listenFor: 'Two chords that share almost every note. Only the bass moves (from E up to F#), once per bar.',
+    howItsPlayed:
+      'Stuwend, gelijkmatig slaan dat nooit stopt. De meeste snaren blijven los, dus het galmt als een bromtoon.',
+    listenFor:
+      'Twee akkoorden die bijna alle noten delen. Alleen de bas beweegt (van E omhoog naar F#), één keer per maat.',
   },
   {
     id: 'wish-you-were-here',
@@ -242,8 +245,8 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     ],
     changeLevel: 1,
     howItsPlayed:
-      'Slow, open strumming that lets every chord ring. There is lots of space between the strums, so you can hear the rhythm clearly.',
-    listenFor: 'One chord per bar, and the bass walks down a little each time: C, then F#, then A, then G.',
+      'Langzaam, open slaan dat elk akkoord laat doorklinken. Er zit veel ruimte tussen de slagen, dus je hoort het ritme goed.',
+    listenFor: 'Eén akkoord per maat, en de bas wandelt elke keer een stukje: C, dan F#, dan A, dan G.',
   },
   {
     id: 'landslide',
@@ -265,9 +268,9 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     ],
     changeLevel: 2,
     howItsPlayed:
-      'Travis picking with a capo on the 3rd fret: the thumb rocks between bass strings while the fingers pick the higher strings in between.',
+      'Travis picking met een capo op de 3e fret: je duim wisselt tussen de bassnaren, terwijl je vingers daartussen de hogere snaren tokkelen.',
     listenFor:
-      'The bass steps down one note at a time: C, B, A, then back to B. Follow the lowest note and you will hear every change.',
+      'De bas zakt telkens één noot: C, B, A en dan terug naar B. Volg de laagste noot en je hoort elke wissel.',
   },
   {
     id: 'hallelujah',
@@ -292,8 +295,8 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     ],
     changeLevel: 1,
     howItsPlayed:
-      'A slow arpeggio in a count of six: one bass note, then up the thin strings and back down, one note at a time.',
-    listenFor: 'C and Am swap every bar at first: Am sounds darker. Later F and G arrive, and the bass climbs.',
+      'Een langzaam arpeggio in een telling van zes: één basnoot, dan omhoog langs de dunne snaren en weer terug, noot voor noot.',
+    listenFor: 'Eerst wisselen C en Am elke maat; Am klinkt donkerder. Later komen F en G erbij en klimt de bas.',
   },
   {
     id: 'im-yours',
@@ -315,8 +318,8 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     ],
     changeLevel: 1,
     howItsPlayed:
-      'Laid-back, bouncy strumming with a capo on the 4th fret. The off-beat up-strums give it a relaxed, reggae-like swing.',
-    listenFor: 'The famous four chords, one per bar: G, D, Em, C. The Em is the only sad-sounding one.',
+      'Relaxed, verend slaan met een capo op de 4e fret. De opslagen tussen de tellen geven het een losse, reggae-achtige swing.',
+    listenFor: 'De bekende vier akkoorden, één per maat: G, D, Em, C. Em is de enige die droevig klinkt.',
   },
   {
     id: 'delilah',
@@ -336,9 +339,9 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
       ['F#m', 4],
     ],
     changeLevel: 1,
-    howItsPlayed: 'Gentle fingerpicking: the bass note, then the three thin strings rolling upward, over and over.',
+    howItsPlayed: 'Zacht fingerpicking: de basnoot, dan de drie dunne snaren omhoog, steeds opnieuw.',
     listenFor:
-      'Just two chords swapping every bar. F#m sounds lower and darker than D, because its bass note is on the thickest string.',
+      'Maar twee akkoorden, die elke maat wisselen. F#m klinkt lager en donkerder dan D, omdat de basnoot op de dikste snaar ligt.',
   },
   {
     id: 'fast-car',
@@ -360,9 +363,9 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     ],
     changeLevel: 2,
     howItsPlayed:
-      'A picked riff with a capo on the 2nd fret. Single notes run up and down through each chord, like a little melody.',
+      'Een getokkeld riffje met een capo op de 2e fret. Losse noten lopen op en neer door elk akkoord, als een klein melodietje.',
     listenFor:
-      'The top two strings hardly change between chords, so listen to the bass: it moves on beat 1 of every bar.',
+      'De dunste twee snaren veranderen nauwelijks tussen de akkoorden, dus luister naar de bas: die beweegt op tel 1 van elke maat.',
   },
 ];
 

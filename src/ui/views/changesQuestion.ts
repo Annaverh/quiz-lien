@@ -20,23 +20,25 @@ function feedback(result: ChangeResult, total: number): { tone: BannerTone; head
   const tips: string[] = [];
   if (result.near.length) {
     tips.push(
-      `${result.near.length === 1 ? 'One mark was' : `${result.near.length} marks were`} one beat off. That still counts; try to land right on the new chord.`,
+      `${result.near.length === 1 ? 'Eén markering zat' : `${result.near.length} markeringen zaten`} een tel naast de wissel. Dat telt mee, maar probeer precies op het nieuwe akkoord te tikken.`,
     );
   }
   if (result.missed.length)
-    tips.push('For the ones you missed, listen for the lowest note: when it jumps, the chord has changed.');
+    tips.push(
+      'Bij de wissels die je miste: luister naar de laagste noot. Verspringt die, dan is het akkoord gewisseld.',
+    );
   if (result.extra.length) {
     tips.push(
-      'Some marks landed where the chord stayed the same. A new strum or note is not a change unless the chord itself sounds different.',
+      'Sommige markeringen stonden waar het akkoord hetzelfde bleef. Een nieuwe slag of noot is pas een wissel als het akkoord zelf anders klinkt.',
     );
   }
-  if (!tips.length) tips.push('Great ears. Try a harder song next.');
+  if (!tips.length) tips.push('Goed gehoord!');
 
   if (!result.correct)
-    return { tone: 'bad', headline: `You found ${foundCount(result)} of ${total} changes.`, tips: tips.join(' ') };
+    return { tone: 'bad', headline: `Je vond ${foundCount(result)} van de ${total} wissels.`, tips: tips.join(' ') };
   return result.near.length
-    ? { tone: 'near', headline: `You found all ${total} changes!`, tips: tips.join(' ') }
-    : { tone: 'good', headline: `Spot on: all ${total} changes!`, tips: tips.join(' ') };
+    ? { tone: 'near', headline: `Je vond alle ${total} wissels!`, tips: tips.join(' ') }
+    : { tone: 'good', headline: `Precies raak: alle ${total} wissels!`, tips: tips.join(' ') };
 }
 
 export function changesQuestionView(app: AppActions, round: Round, song: Song): View {
@@ -52,7 +54,7 @@ export function changesQuestionView(app: AppActions, round: Round, song: Song): 
   const status = el(
     'p',
     { class: 'hint', 'aria-live': 'polite' },
-    'You can also click a beat in the grid to add or remove a mark.',
+    'Je kunt ook op een tel klikken om een markering te zetten of weg te halen.',
   );
   const tapButton = el(
     'button',
@@ -72,13 +74,13 @@ export function changesQuestionView(app: AppActions, round: Round, song: Song): 
         }
       },
     },
-    'Change!',
-    el('small', {}, 'Tap here, or press the space bar'),
+    'Wissel!',
+    el('small', {}, 'Tik hier of druk op de spatiebalk'),
   );
   const checkButton = el(
     'button',
     { type: 'button', class: 'btn primary', disabled: true, onClick: check },
-    'Check my answer',
+    'Controleer',
   );
   const clearButton = el(
     'button',
@@ -88,14 +90,14 @@ export function changesQuestionView(app: AppActions, round: Round, song: Song): 
       onClick: () => {
         marks.clear();
         grid.setMarks(marks);
-        status.textContent = 'Marks cleared.';
+        status.textContent = 'Markeringen gewist.';
       },
     },
-    'Clear marks',
+    'Wis markeringen',
   );
 
   const listen = createPlayButton({
-    label: 'Listen',
+    label: 'Luister',
     variant: 'big',
     getPlayable: () => ({
       ...arrangeForPlayback(song, { countIn: checked ? 0 : countInBeats }),
@@ -119,7 +121,7 @@ export function changesQuestionView(app: AppActions, round: Round, song: Song): 
 
   function renderCountIn(active: number): void {
     countIn.replaceChildren(
-      el('span', { class: 'label' }, 'Count-in'),
+      el('span', { class: 'label' }, 'Aftellen'),
       ...Array.from({ length: countInBeats }, (_, k) =>
         el('span', { class: k === active ? 'dot is-on' : 'dot' }, String(k + 1)),
       ),
@@ -137,7 +139,7 @@ export function changesQuestionView(app: AppActions, round: Round, song: Song): 
     if (checked) return;
     const playback = listen.playback;
     if (!playback || !current) {
-      status.textContent = 'Press Listen first, then tap along while it plays.';
+      status.textContent = 'Druk eerst op Luister en tik mee terwijl het speelt.';
       return;
     }
     const { leadIn, beatDur, beats } = current;
@@ -148,7 +150,7 @@ export function changesQuestionView(app: AppActions, round: Round, song: Song): 
     grid.flash(beat);
     pulse(tapButton);
     const bar = Math.floor(beat / song.beatsPerBar) + 1;
-    status.textContent = `Marked bar ${bar}, beat ${(beat % song.beatsPerBar) + 1}.`;
+    status.textContent = `Gemarkeerd: maat ${bar}, tel ${(beat % song.beatsPerBar) + 1}.`;
   }
 
   const unbindSpace = bindSpaceTap(() => !checked, tap);
@@ -173,7 +175,7 @@ export function changesQuestionView(app: AppActions, round: Round, song: Song): 
     tapArea.hidden = true;
     actionRow.hidden = true;
     countIn.hidden = true;
-    listen.setLabel('Listen again');
+    listen.setLabel('Luister opnieuw');
     mixer.setVisible(true);
 
     const { tone, headline, tips } = feedback(result, changes.length);
@@ -186,7 +188,7 @@ export function changesQuestionView(app: AppActions, round: Round, song: Song): 
       el(
         'details',
         { class: 'learn', open: !result.correct },
-        el('summary', {}, 'Explore the chord changes'),
+        el('summary', {}, 'Bekijk de akkoordwissels'),
         explorer.node,
       ),
       el('div', { class: 'action-row' }, el('span', { class: 'spacer' }), nextButton(app, round)),
@@ -196,14 +198,14 @@ export function changesQuestionView(app: AppActions, round: Round, song: Song): 
 
   const help =
     song.beatsPerBar === 2
-      ? 'This one swings in a count of six, felt as two big beats per bar. After the count-in, tap Change! every time a new chord starts.'
-      : 'Each box is one beat; four beats make a bar. After the count-in, tap Change! every time a new chord starts.';
+      ? 'Dit nummer wiegt in een telling van zes, gevoeld als twee grote tellen per maat. Tik na het aftellen op Wissel! zodra er een nieuw akkoord begint.'
+      : 'Elk vakje is één tel en vier tellen vormen een maat. Tik na het aftellen op Wissel! zodra er een nieuw akkoord begint.';
 
   const node = el(
     'section',
     { class: 'card', 'aria-labelledby': 'q-title' },
     questionKicker(round, 'changes'),
-    el('h2', { class: 'q-title', id: 'q-title' }, 'When does the chord change?'),
+    el('h2', { class: 'q-title', id: 'q-title' }, 'Wanneer wisselt het akkoord?'),
     el('p', { class: 'q-help' }, help),
     el('div', { class: 'listen-row' }, listen.node, countIn),
     grid.node,

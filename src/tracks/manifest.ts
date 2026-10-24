@@ -9,7 +9,7 @@ export interface TrackEntry {
 
 /**
  * Recordings of the real songs, keyed by song id. Find `start` and `bpm` with
- * "Line up the real song" on a song's Study page, then paste the copied line here.
+ * "Origineel gelijkzetten" on a song's Study page, then paste the copied line here.
  * See public/audio/README.md.
  */
 export const TRACKS: Readonly<Record<string, TrackEntry>> = {

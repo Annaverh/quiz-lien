@@ -2,9 +2,8 @@
 .card {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: clamp(16px, 4vw, 26px);
-  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  padding: clamp(16px, 4vw, 28px);
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -18,7 +17,7 @@
 }
 .q-title {
   font-size: var(--step-2);
-  font-weight: 750;
+  font-weight: 600;
 }
 .q-help {
   color: var(--muted);
@@ -44,9 +43,9 @@
   min-height: 44px;
   padding: 6px 18px 6px 6px;
   border-radius: 999px;
-  border: 1.5px solid var(--ink);
+  border: 1px solid var(--ink);
   background: var(--surface);
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
 }
 .play-btn .play-glyph {
@@ -132,7 +131,7 @@
   padding: 16px 18px;
   min-height: 96px;
   border-radius: var(--radius);
-  border: 2px solid var(--c);
+  border: 1.5px solid var(--c);
   background: var(--surface);
   cursor: pointer;
   transition:
@@ -151,6 +150,7 @@
 .answer-btn strong {
   font-family: var(--font-display);
   font-size: var(--step-2);
+  font-weight: 600;
   color: var(--c);
   line-height: 1.1;
 }
@@ -189,7 +189,7 @@
   gap: 12px;
   align-items: flex-start;
   padding: 14px 16px;
-  border-radius: 12px;
+  border-radius: 8px;
   background: var(--bg);
   color: var(--ink);
 }
@@ -259,19 +259,18 @@
 }
 
 details.learn {
-  border: 1px dashed var(--line);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 0 16px;
 }
 details.learn[open] {
   padding-bottom: 16px;
-  border-style: solid;
 }
 details.learn summary {
   cursor: pointer;
   list-style: none;
   padding: 14px 0;
-  font-weight: 700;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -280,18 +279,17 @@ details.learn summary::-webkit-details-marker {
   display: none;
 }
 details.learn summary::before {
-  content: '+';
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: var(--ink);
-  color: var(--paper);
-  font-weight: 800;
+  content: '';
+  width: 7px;
+  height: 7px;
+  margin-inline: 2px 4px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.15s;
 }
 details.learn[open] summary::before {
-  content: '\2212';
+  transform: rotate(45deg);
 }
 .learn-body {
   display: flex;
@@ -303,7 +301,7 @@ details.learn[open] summary::before {
 .score-big {
   font-family: var(--font-display);
   font-size: clamp(3rem, 2rem + 6vw, 5rem);
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
@@ -324,7 +322,7 @@ details.learn[open] summary::before {
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
-  border-radius: 12px;
+  border-radius: 8px;
   border: 1px solid var(--line);
 }
 .review .mark {

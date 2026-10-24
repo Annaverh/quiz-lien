@@ -1,7 +1,7 @@
 import { el } from '../../lib/dom';
 import { icon } from '../../lib/icons';
 import { chordSegments } from '../../music/arrangement';
-import { STYLE_LABEL } from '../../music/constants';
+import { ERA_LABEL, STYLE_LABEL } from '../../music/constants';
 import type { Song } from '../../music/types';
 import { createBeatGrid } from '../components/beatGrid';
 import { createChangeExplorer } from '../components/changeExplorer';
@@ -28,7 +28,7 @@ export function studyView(app: AppActions, song: Song): View {
         'button',
         { type: 'button', class: 'btn quiet small', onClick: () => app.goHome() },
         icon('back'),
-        'All songs',
+        'Alle nummers',
       ),
     ),
     el(
@@ -37,7 +37,7 @@ export function studyView(app: AppActions, song: Song): View {
       el(
         'div',
         { class: 'q-kicker' },
-        el('span', { class: 'eyebrow' }, `Study · ${song.era}`),
+        el('span', { class: 'eyebrow' }, `Oefenen · ${ERA_LABEL[song.era]}`),
         el(
           'span',
           { class: 'action-row' },
@@ -46,13 +46,13 @@ export function studyView(app: AppActions, song: Song): View {
         ),
       ),
       songMeta(song, 'h2', 'study-h'),
-      el('h3', { class: 'eyebrow' }, 'How it is played'),
+      el('h3', { class: 'eyebrow' }, 'Zo speel je het'),
       pattern.node,
     ),
     el(
       'section',
       { class: 'card', 'aria-labelledby': 'study-changes-h' },
-      el('h3', { class: 'q-title', id: 'study-changes-h' }, 'The chord changes'),
+      el('h3', { class: 'q-title', id: 'study-changes-h' }, 'De akkoordwissels'),
       grid.node,
       changes.node,
     ),

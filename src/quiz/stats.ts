@@ -2,7 +2,7 @@ import { storage } from '../lib/storage';
 import type { Mode } from './modes';
 import type { Round } from './round';
 
-const STATS_KEY = 'strum-pick-change/v1';
+const STATS_KEY = 'quiz-lien/v1';
 
 export interface BestScore {
   score: number;

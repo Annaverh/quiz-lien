@@ -9,18 +9,18 @@ export interface ModeInfo {
 
 export const MODES: Readonly<Record<Mode, ModeInfo>> = {
   technique: {
-    title: 'Strum or pick?',
-    blurb: 'Hear a short fragment and decide how the guitar is played.',
+    title: 'Slaan of tokkelen?',
+    blurb: 'Luister naar een kort fragment en raad hoe de gitaar bespeeld wordt.',
     length: 6,
   },
   changes: {
-    title: 'Spot the change',
-    blurb: 'Tap along and mark the beats where a new chord starts.',
+    title: 'Hoor de wissel',
+    blurb: 'Tik mee en markeer de tellen waarop een nieuw akkoord begint.',
     length: 5,
   },
   mixed: {
-    title: 'Mixed set',
-    blurb: 'Both kinds of question, taking turns.',
+    title: 'Door elkaar',
+    blurb: 'Beide soorten vragen, om en om.',
     length: 6,
   },
 };

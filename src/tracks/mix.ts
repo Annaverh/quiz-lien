@@ -2,7 +2,7 @@ import { engine } from '../audio/engine';
 import { clamp } from '../lib/math';
 import { storage } from '../lib/storage';
 
-const MIX_KEY = 'strum-pick-change/mix/v1';
+const MIX_KEY = 'quiz-lien/mix/v1';
 const DEFAULT_LEVEL = 0.5;
 
 type Listener = (level: number) => void;

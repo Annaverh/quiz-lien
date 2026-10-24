@@ -1,12 +1,12 @@
-# Strum, Pick & Change
+# Quiz Lien
 
-A free ear-training quiz for beginner guitar players. Learners hear a short fragment of a
-well-known song and answer one of two kinds of question:
+A free ear-training quiz for beginner guitar players. The interface is in Dutch. Learners
+hear a short fragment of a well-known song and answer one of two kinds of question:
 
-- **Strum or pick?** Is the guitar strummed or picked? After answering, an interactive tab
-  shows the exact pattern; it can be looped, slowed down, compared with the other style,
+- **Slaan of tokkelen?** Is the guitar strummed or picked? After answering, an interactive
+  tab shows the exact pattern; it can be looped, slowed down, compared with the other style,
   and clicked step by step.
-- **Spot the change.** Tap along (or press the space bar) on the beats where a new chord
+- **Hoor de wissel.** Tap along (or press the space bar) on the beats where a new chord
   starts. Afterwards the beat grid shows every chord, with change bells, chord diagrams and
   tips on what to listen for.
 
@@ -38,6 +38,7 @@ npm run dev        # http://localhost:5173
 ```
 src/
   main.ts                 Entry point: styles, data validation, app start
+  migrateStorage.ts       Moves values saved under the app's old storage keys
   lib/                    Small framework-free helpers (DOM builder, storage, PRNG, toast)
   music/                  Pure music model — no DOM, no audio
     chords.ts             Chord shapes
@@ -79,8 +80,8 @@ The `music` and `quiz` layers are pure and fully unit-tested.
 ## Adding a real recording
 
 See [`public/audio/README.md`](public/audio/README.md). In short: put the MP3 in
-`public/audio/`, list it in `src/tracks/manifest.ts`, then use **Line up the real song**
-on the song's Study page to find where the fragment starts and copy the line into the
+`public/audio/`, list it in `src/tracks/manifest.ts`, then use **Origineel gelijkzetten**
+on the song's study page to find where the fragment starts and copy the line into the
 manifest. Only publish recordings you have the right to share.
 
 ## Deploying for free

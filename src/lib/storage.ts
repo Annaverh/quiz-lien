@@ -19,4 +19,16 @@ export const storage = {
       // Storage unavailable: the value simply isn't remembered.
     }
   },
+
+  /** Moves a value saved under an old key, unless the new key already holds one. */
+  migrate(from: string, to: string): void {
+    try {
+      const value = localStorage.getItem(from);
+      if (value === null) return;
+      if (localStorage.getItem(to) === null) localStorage.setItem(to, value);
+      localStorage.removeItem(from);
+    } catch {
+      // Storage unavailable: there is nothing to move.
+    }
+  },
 };

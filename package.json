@@ -1,8 +1,8 @@
 {
-  "name": "strum-pick-change",
+  "name": "quiz-lien",
   "version": "1.0.0",
   "private": true,
-  "description": "A free ear-training quiz for beginner guitarists: tell strumming from picking and hear when the chord changes.",
+  "description": "Quiz Lien: a Dutch ear-training quiz for beginner guitarists. Tell strumming from picking and hear when the chord changes.",
   "type": "module",
   "scripts": {
     "dev": "vite",

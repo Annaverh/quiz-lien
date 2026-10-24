@@ -1,5 +1,5 @@
 import { el } from '../../lib/dom';
-import { STYLE_LABEL } from '../../music/constants';
+import { STYLE_LABEL, STYLE_PARTICIPLE } from '../../music/constants';
 import type { Song, Style } from '../../music/types';
 import { TECHNIQUE_FRAGMENT_BEATS } from '../../quiz/modes';
 import type { Round } from '../../quiz/round';
@@ -13,13 +13,13 @@ import type { AppActions, View } from '../types';
 import { nextButton, questionKicker, resultBanner } from './question';
 
 const ANSWERS: readonly { style: Style; hint: string; key: string }[] = [
-  { style: 'strum', hint: 'Many strings at once, brushed down and up.', key: 'S' },
-  { style: 'pick', hint: 'One string at a time, note after note.', key: 'P' },
+  { style: 'strum', hint: 'Veel snaren tegelijk, neer en op aangeslagen.', key: 'S' },
+  { style: 'pick', hint: 'Eén snaar tegelijk, noot na noot.', key: 'T' },
 ];
 
 const WHY: Readonly<Record<Style, string>> = {
-  strum: 'You can hear several strings hit together in a quick sweep, over and over in a rhythm.',
-  pick: 'You can hear single notes one after another, each with its own clear start.',
+  strum: 'Je hoort meerdere snaren tegelijk klinken in een snelle veeg, steeds opnieuw in een ritme.',
+  pick: 'Je hoort losse noten na elkaar, elk met een eigen duidelijk begin.',
 };
 
 export function techniqueQuestionView(app: AppActions, round: Round, song: Song): View {
@@ -34,7 +34,7 @@ export function techniqueQuestionView(app: AppActions, round: Round, song: Song)
     { class: 'eq', 'aria-hidden': 'true' },
     Array.from({ length: 5 }, () => el('i')),
   );
-  const listenMeta = el('span', { class: 'listen-meta' }, 'Press play to hear the fragment.');
+  const listenMeta = el('span', { class: 'listen-meta' }, 'Druk op Luister om het fragment te horen.');
 
   const answerButtons = new Map(
     ANSWERS.map(({ style, hint, key }) => [
@@ -50,7 +50,7 @@ export function techniqueQuestionView(app: AppActions, round: Round, song: Song)
   );
 
   const listen = createPlayButton({
-    label: 'Listen',
+    label: 'Luister',
     variant: 'big',
     getPlayable: () => ({
       ...arrangeForPlayback(song, { beats: TECHNIQUE_FRAGMENT_BEATS }),
@@ -58,7 +58,7 @@ export function techniqueQuestionView(app: AppActions, round: Round, song: Song)
     }),
     onStart: () => {
       listens += 1;
-      listenMeta.textContent = `Heard ${listens} ${listens === 1 ? 'time' : 'times'}`;
+      listenMeta.textContent = `${listens} keer beluisterd`;
       if (!answered) for (const button of answerButtons.values()) button.disabled = false;
     },
     onStep: info => eq.classList.toggle('is-live', info !== null),
@@ -77,28 +77,23 @@ export function techniqueQuestionView(app: AppActions, round: Round, song: Song)
       button.disabled = true;
       button.classList.toggle('is-chosen', style === choice);
       button.classList.toggle('is-dim', style !== choice && style !== song.technique);
-      if (style === song.technique) button.append(el('span', { class: 'verdict' }, 'Right answer'));
+      if (style === song.technique) button.append(el('span', { class: 'verdict' }, 'Het goede antwoord'));
     }
-    listen.setLabel('Listen again');
+    listen.setLabel('Luister opnieuw');
     mixer.setVisible(true);
 
-    const real = STYLE_LABEL[song.technique].toLowerCase();
+    const played = STYLE_PARTICIPLE[song.technique];
     explorer = createPatternExplorer(song, { showMixer: false });
     reveal.replaceChildren(
       resultBanner(
         correct ? 'good' : 'bad',
         correct,
-        correct ? `Yes! That was ${real}.` : `Not quite. That was ${real}.`,
+        correct ? `Ja! Hier werd ${played}.` : `Net niet. Hier werd ${played}.`,
         WHY[song.technique],
       ),
       songMeta(song),
       mixer.node,
-      el(
-        'details',
-        { class: 'learn', open: !correct },
-        el('summary', {}, `Show me the ${real} pattern`),
-        explorer.node,
-      ),
+      el('details', { class: 'learn', open: !correct }, el('summary', {}, 'Bekijk het patroon'), explorer.node),
       el('div', { class: 'action-row' }, el('span', { class: 'spacer' }), nextButton(app, round)),
     );
     reveal.hidden = false;
@@ -114,8 +109,8 @@ export function techniqueQuestionView(app: AppActions, round: Round, song: Song)
     'section',
     { class: 'card', 'aria-labelledby': 'q-title' },
     questionKicker(round, 'technique'),
-    el('h2', { class: 'q-title', id: 'q-title' }, 'Is this guitar strummed or picked?'),
-    el('p', { class: 'q-help' }, 'Listen to the fragment as often as you like, then choose.'),
+    el('h2', { class: 'q-title', id: 'q-title' }, 'Wordt deze gitaar geslagen of getokkeld?'),
+    el('p', { class: 'q-help' }, 'Luister zo vaak als je wilt en kies dan.'),
     el('div', { class: 'listen-row' }, listen.node, eq, listenMeta),
     el('div', { class: 'answers' }, [...answerButtons.values()]),
     reveal,

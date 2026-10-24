@@ -6,7 +6,7 @@ import { icon } from '../../lib/icons';
 import { errorMessage, notify } from '../../lib/notify';
 import type { NoteEvent } from '../../music/types';
 
-const AUDIO_FAILED = 'Sound could not start. Check your volume and try again.';
+const AUDIO_FAILED = 'Het geluid kon niet starten. Controleer je volume en probeer het opnieuw.';
 
 export interface PlayButtonOptions<T extends Playable> {
   label: string;

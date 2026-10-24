@@ -1,76 +1,42 @@
-/* Layout: one centred practice column on faint "tab paper"; strumming is steel blue, picking is amber, everything else stays quiet. */
+/*
+ * Warm paper and ink. Colour carries meaning only: strumming is blue, picking is orange,
+ * and green/red/amber report answers. Each colour is light-dark(light, dark).
+ */
 :root {
-  --paper: #edf0eb;
-  --surface: #fafbf8;
-  --sunk: #e2e7e0;
-  --ink: #17201c;
-  --muted: #55625b;
-  --line: #c9d1c8;
-  --strum: #1c6884;
-  --strum-soft: #d3e6ed;
-  --pick: #a35b0a;
-  --pick-soft: #f3e1ca;
-  --good: #2a7748;
-  --good-soft: #d5eadc;
-  --bad: #ae3535;
-  --bad-soft: #f3d8d6;
-  --near: #876600;
-  --near-soft: #f0e5c0;
-  --focus: #1c6884;
-  --shadow: 0 1px 0 rgba(23, 32, 28, 0.06), 0 6px 20px -12px rgba(23, 32, 28, 0.25);
+  color-scheme: light dark;
 
-  --font-display: 'Bricolage Grotesque', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
-  --font-body: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-tab: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --paper: light-dark(#f6f3ec, #16140f);
+  --surface: light-dark(#fffdf8, #1f1c17);
+  --sunk: light-dark(#ece6da, #2a261f);
+  --ink: light-dark(#1f1b16, #f2ede3);
+  --muted: light-dark(#685f53, #aa9f8f);
+  --line: light-dark(#ddd5c6, #3a342b);
+  --strum: light-dark(#2451c2, #8fa9f2);
+  --strum-soft: light-dark(#e0e7f8, #1e2842);
+  --pick: light-dark(#b23c0c, #f08d58);
+  --pick-soft: light-dark(#f8e3d4, #40230f);
+  --good: light-dark(#2c7442, #6cc68c);
+  --good-soft: light-dark(#dcecdf, #173326);
+  --bad: light-dark(#ad302d, #f07f77);
+  --bad-soft: light-dark(#f6dcd9, #3f1f1c);
+  --near: light-dark(#7f5c00, #e0bd56);
+  --near-soft: light-dark(#f1e6c4, #392f13);
+  --focus: var(--strum);
+
+  --font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-tab: ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
 
   --step--1: 0.875rem;
   --step-0: 1rem;
   --step-1: 1.2rem;
   --step-2: 1.5rem;
-  --step-3: clamp(1.9rem, 1.4rem + 2.4vw, 2.75rem);
-  --radius: 14px;
+  --step-3: clamp(2rem, 1.4rem + 2.6vw, 3rem);
+  --radius: 10px;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --paper: #101613;
-    --surface: #18201c;
-    --sunk: #212b26;
-    --ink: #e5ebe6;
-    --muted: #9aa89f;
-    --line: #33403a;
-    --strum: #66b8d4;
-    --strum-soft: #1a3541;
-    --pick: #eaa352;
-    --pick-soft: #3d2a14;
-    --good: #63c68d;
-    --good-soft: #173528;
-    --bad: #f07d78;
-    --bad-soft: #3f1f1d;
-    --near: #e3be55;
-    --near-soft: #393014;
-    --focus: #66b8d4;
-    --shadow: 0 1px 0 rgba(0, 0, 0, 0.3), 0 8px 24px -14px rgba(0, 0, 0, 0.7);
-    color-scheme: dark;
-  }
+:root[data-theme='light'] {
+  color-scheme: light;
 }
 :root[data-theme='dark'] {
-  --paper: #101613;
-  --surface: #18201c;
-  --sunk: #212b26;
-  --ink: #e5ebe6;
-  --muted: #9aa89f;
-  --line: #33403a;
-  --strum: #66b8d4;
-  --strum-soft: #1a3541;
-  --pick: #eaa352;
-  --pick-soft: #3d2a14;
-  --good: #63c68d;
-  --good-soft: #173528;
-  --bad: #f07d78;
-  --bad-soft: #3f1f1d;
-  --near: #e3be55;
-  --near-soft: #393014;
-  --focus: #66b8d4;
-  --shadow: 0 1px 0 rgba(0, 0, 0, 0.3), 0 8px 24px -14px rgba(0, 0, 0, 0.7);
   color-scheme: dark;
 }

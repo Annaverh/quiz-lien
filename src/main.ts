@@ -1,3 +1,4 @@
+import './migrateStorage';
 import './styles/tokens.css';
 import './styles/base.css';
 import './styles/components.css';
@@ -29,8 +30,8 @@ try {
     el(
       'div',
       { class: 'error-box', role: 'alert' },
-      el('h2', {}, 'Something went wrong while loading.'),
-      el('p', {}, 'Reload the page to try again.'),
+      el('h2', {}, 'Er ging iets mis bij het laden.'),
+      el('p', {}, 'Herlaad de pagina om het opnieuw te proberen.'),
     ),
   );
 }

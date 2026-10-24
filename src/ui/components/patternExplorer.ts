@@ -1,7 +1,7 @@
 import { el, nextId } from '../../lib/dom';
 import { snippetForStep, type Step } from '../../music/arrangement';
 import { chordFor } from '../../music/chords';
-import { otherStyle, STRING_NAMES, STYLE_LABEL, TAB_STRING_ORDER } from '../../music/constants';
+import { otherStyle, STRING_NAMES, STYLE_LABEL, STYLE_PARTICIPLE, TAB_STRING_ORDER } from '../../music/constants';
 import { countLabel } from '../../music/patterns';
 import { REST, type Song, type StepToken, type Style } from '../../music/types';
 import { pickTargets, resolvePickString, voiceStep } from '../../music/voicing';
@@ -15,8 +15,8 @@ const ARROWS = { down: '↓', up: '↑', rest: '·' } as const;
 
 const LEGEND: Readonly<Record<Style, string>> = {
   strum:
-    'Big ↓ is a down-strum across all the strings. Small ↑ is a lighter up-strum that only brushes the thin strings. A dot means your hand keeps moving but misses the strings. Click any column to hear it.',
-  pick: 'Each line is a string, thinnest on top. A number tells you which fret to hold (0 = open string); a coloured number is plucked on that count. Only one or two strings sound at a time. Click any column to hear it.',
+    'Een grote ↓ is een neerslag over alle snaren. Een kleine ↑ is een lichtere opslag die alleen de dunne snaren raakt. Bij een puntje beweegt je hand mee maar mist hij de snaren. Klik op een kolom om hem te horen.',
+  pick: 'Elke lijn is een snaar, de dunste bovenaan. Het getal zegt welke fret je indrukt (0 = losse snaar); een gekleurd getal tokkel je op die tel. Er klinken maar één of twee snaren tegelijk. Klik op een kolom om hem te horen.',
 };
 
 /** Interactive tab of the song's pattern: play, loop, slow down, compare styles, click a step to hear it. */
@@ -33,7 +33,7 @@ export function createPatternExplorer(song: Song, { showMixer = true } = {}): Vi
   const mixer = createTrackMixer(song, { visible: showMixer });
 
   const player = createPlayButton({
-    label: 'Play the pattern',
+    label: 'Speel het patroon',
     getPlayable: () => ({
       ...arrangeForPlayback(song, { style, tempo: Number(tempo) }),
       track: mixer.trackFor(Number(tempo)),
@@ -49,11 +49,11 @@ export function createPatternExplorer(song: Song, { showMixer = true } = {}): Vi
   }
 
   function describe(step: Step): string {
-    if (step.token === REST) return 'no strum, hand keeps moving';
-    if (style === 'strum') return `${step.token === 'D' ? 'down' : 'up'}-strum on ${step.chord}`;
+    if (step.token === REST) return 'geen slag, hand beweegt mee';
+    if (style === 'strum') return `${step.token === 'D' ? 'neerslag' : 'opslag'} op ${step.chord}`;
     const chord = chordFor(step.chord);
     const strings = pickTargets(step.token).map(target => STRING_NAMES[resolvePickString(chord, target)]);
-    return `pluck the ${strings.join(' and ')} string${strings.length > 1 ? 's' : ''} of ${step.chord}`;
+    return `tokkel de ${strings.join('- en ')}-${strings.length > 1 ? 'snaren' : 'snaar'} van ${step.chord}`;
   }
 
   function stepBody(step: Step, onBeat: boolean): Node | Node[] {
@@ -81,7 +81,7 @@ export function createPatternExplorer(song: Song, { showMixer = true } = {}): Vi
       {
         type: 'button',
         class: 'tab-step',
-        'aria-label': `Count ${count}: ${describe(step)}`,
+        'aria-label': `Tel ${count}: ${describe(step)}`,
         onClick: () => playSnippet(snippetForStep(song, step.chord, step.token as StepToken, style)),
       },
       el('span', { class: 'cell chord' }, showChord ? step.chord : ''),
@@ -123,8 +123,8 @@ export function createPatternExplorer(song: Song, { showMixer = true } = {}): Vi
     legend.textContent = LEGEND[style];
     compareNote.textContent =
       style === song.technique
-        ? `This is how the song is played. Switch to ${STYLE_LABEL[otherStyle(style)].toLowerCase()} to hear the same chords played the other way.`
-        : `For comparison only: the song itself uses ${STYLE_LABEL[song.technique].toLowerCase()}. Hear how different the same chords sound.`;
+        ? `Zo wordt het nummer gespeeld. Kies ${STYLE_LABEL[otherStyle(style)].toLowerCase()} om dezelfde akkoorden op de andere manier te horen.`
+        : `Alleen ter vergelijking: in het nummer zelf wordt ${STYLE_PARTICIPLE[song.technique]}. Hoor hoe anders dezelfde akkoorden klinken.`;
   }
 
   function restartIfPlaying(): void {
@@ -139,7 +139,7 @@ export function createPatternExplorer(song: Song, { showMixer = true } = {}): Vi
   const loopId = nextId('loop');
   const styleOptions = (['strum', 'pick'] as const).map(value => ({
     value,
-    label: STYLE_LABEL[value] + (value === song.technique ? ' (song)' : ''),
+    label: STYLE_LABEL[value] + (value === song.technique ? ' (nummer)' : ''),
   }));
 
   const node = el(
@@ -151,14 +151,14 @@ export function createPatternExplorer(song: Song, { showMixer = true } = {}): Vi
       { class: 'controls' },
       player.node,
       controlGroup(
-        'Hear it',
+        'Speelwijze',
         segmented(styleOptions, style, value => {
           style = value;
           restartIfPlaying();
         }),
       ),
       controlGroup(
-        'Speed',
+        'Tempo',
         segmented(TEMPO_OPTIONS, tempo, value => {
           tempo = value;
           mixer.setTempo(Number(value));
@@ -175,7 +175,7 @@ export function createPatternExplorer(song: Song, { showMixer = true } = {}): Vi
             loop = (event.target as HTMLInputElement).checked;
           },
         }),
-        'Loop',
+        'Herhalen',
       ),
     ),
     mixer.node,
@@ -183,7 +183,7 @@ export function createPatternExplorer(song: Song, { showMixer = true } = {}): Vi
       ? el(
           'p',
           { class: 'hint' },
-          `Capo on fret ${song.capo}. Fret numbers count up from the capo, as if it were the end of the neck.`,
+          `Capo op fret ${song.capo}. De fretnummers tellen vanaf de capo, alsof daar de hals begint.`,
         )
       : null,
     el('div', { class: 'tab-scroll' }, board),

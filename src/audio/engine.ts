@@ -93,7 +93,9 @@ export class GuitarEngine {
   async #context(): Promise<AudioContext> {
     if (!this.#ctx) {
       if (typeof AudioContext === 'undefined') {
-        throw new Error('This browser cannot play sound. Try a recent Chrome, Firefox, Safari or Edge.');
+        throw new Error(
+          'Deze browser kan geen geluid afspelen. Probeer een recente versie van Chrome, Firefox, Safari of Edge.',
+        );
       }
       const ctx = new AudioContext({ latencyHint: 'interactive' });
       this.#guitarInput = buildGuitarChain(ctx);
