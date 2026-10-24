@@ -45,16 +45,15 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     stepsPerBeat: 2,
     pattern: ['B', 3, 4, 3, 'B', 3, 4, 3],
     progression: [
-      ['G', 2],
+      ['G', 4],
       ['C', 2],
       ['D', 2],
       ['G', 4],
       ['C', 2],
       ['D', 2],
-      ['G', 2],
     ],
     changeLevel: 2,
-    listenFor: 'G, C en D wisselen elke twee tellen, behalve in het midden: daar blijft G een hele maat staan.',
+    listenFor: 'G blijft een hele maat staan, daarna krijgen C en D elk twee tellen. Dat herhaalt zich.',
   },
   {
     id: 'knockin',

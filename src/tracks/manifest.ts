@@ -17,7 +17,7 @@ export interface TrackEntry {
  */
 export const TRACKS: Readonly<Record<string, TrackEntry>> = {
   wonderwall: { file: 'wonderwall.mp3', start: 5.0, bpm: 87.04, cents: 5 },
-  'good-riddance': { file: 'good-riddance.mp3', start: 2.87, bpm: 96.16, cents: 9 },
+  'good-riddance': { file: 'good-riddance.mp3', start: 5.0, bpm: 96.16, cents: 9 },
   knockin: { file: 'knockin.mp3', start: 5.0, bpm: 69.87, cents: 3 },
   'rising-sun': { file: 'rising-sun.mp3', start: 5.0, bpm: 81.84, cents: 28 },
   'dust-wind': { file: 'dust-wind.mp3', start: 5.0, bpm: 93.72 },
