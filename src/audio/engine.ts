@@ -56,7 +56,8 @@ export class GuitarEngine {
       ),
       ...(playable.chimes ?? []).map(c => scheduleBlip(ctx, guitarBus, t0 + c.time, 2093, 0.16, 0.4)),
     ];
-    if (playable.track) sources.push(this.#scheduleTrack(ctx, trackBus, t0, playable));
+    const trackSource = playable.track ? this.#scheduleTrack(ctx, trackBus, t0, playable) : null;
+    if (trackSource) sources.push(trackSource);
 
     this.#current = new Playback(ctx, [guitarBus, trackBus], sources, t0, playable, handlers);
     return this.#current;
@@ -141,25 +142,26 @@ export class GuitarEngine {
 
   /**
    * Starts the recording so that `track.start` lines up with the first beat after the
-   * count-in. During a count-in the record already plays as a lead-in.
+   * count-in. During a count-in the record already plays as a lead-in. Returns null when
+   * the cue lies past the end of the file, so there is nothing to play.
    */
-  #scheduleTrack(ctx: AudioContext, bus: AudioNode, t0: number, playable: Playable): AudioBufferSourceNode {
+  #scheduleTrack(ctx: AudioContext, bus: AudioNode, t0: number, playable: Playable): AudioBufferSourceNode | null {
     const track = playable.track as NonNullable<Playable['track']>;
     const leadIn = playable.leadIn ?? 0;
+    const fileTimeAtStart = track.start - leadIn;
+    const offset = Math.max(0, fileTimeAtStart);
+    if (offset >= track.buffer.duration) return null;
+
     const source = ctx.createBufferSource();
     source.buffer = track.buffer;
     const fade = ctx.createGain();
-    const fileTimeAtStart = track.start - leadIn;
     const when = t0 + Math.max(0, -fileTimeAtStart);
-    const offset = Math.max(0, fileTimeAtStart);
     const end = t0 + playable.duration + 0.6;
     fade.gain.setValueAtTime(1, Math.max(when, end - 0.4));
     fade.gain.linearRampToValueAtTime(0, end);
     source.connect(fade).connect(bus);
-    if (offset < track.buffer.duration) {
-      source.start(when, offset);
-      source.stop(end + 0.02);
-    }
+    source.start(when, offset);
+    source.stop(end + 0.02);
     source.onended = () => {
       source.disconnect();
       fade.disconnect();

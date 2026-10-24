@@ -1,5 +1,5 @@
 import { storage } from '../lib/storage';
-import type { Mode } from './modes';
+import { MODES, type Mode } from './modes';
 import type { Round } from './round';
 
 const STATS_KEY = 'quiz-lien/v1';
@@ -14,11 +14,29 @@ export interface Stats {
   rounds: number;
 }
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
+const isBestScore = (value: unknown): value is BestScore =>
+  isRecord(value) &&
+  Number.isInteger(value.score) &&
+  Number.isInteger(value.total) &&
+  (value.total as number) > 0 &&
+  (value.score as number) >= 0;
+
+/** Reads saved stats, dropping anything malformed (old versions, hand edits) instead of trusting it. */
 export function loadStats(): Stats {
-  const stats = storage.read<Partial<Stats> | null>(STATS_KEY, null);
-  return stats && typeof stats === 'object'
-    ? { best: stats.best ?? {}, rounds: stats.rounds ?? 0 }
-    : { best: {}, rounds: 0 };
+  const stored = storage.read<unknown>(STATS_KEY, null);
+  if (!isRecord(stored)) return { best: {}, rounds: 0 };
+  const best: Stats['best'] = {};
+  if (isRecord(stored.best)) {
+    for (const mode of Object.keys(MODES) as Mode[]) {
+      const score = stored.best[mode];
+      if (isBestScore(score)) best[mode] = { score: score.score, total: score.total };
+    }
+  }
+  const rounds = Number.isInteger(stored.rounds) && (stored.rounds as number) >= 0 ? (stored.rounds as number) : 0;
+  return { best, rounds };
 }
 
 /** Saves a finished round and returns whether it is a new personal best. */

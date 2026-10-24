@@ -39,7 +39,7 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     bpm: 95,
     beatsPerBar: 4,
     stepsPerBeat: 2,
-    pattern: ['B', 3, 4, 3, 'A', 3, 4, 3],
+    pattern: ['B', 3, 4, 3, 'B', 3, 4, 3],
     progression: [
       ['G', 4],
       ['C', 2],
@@ -50,7 +50,7 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     ],
     changeLevel: 2,
     howItsPlayed:
-      'Eén snaar tegelijk getokkeld: een basnoot, met daartussen losse hogere snaren. Elke noot heeft zijn eigen kleine aanslag.',
+      'Eén snaar tegelijk getokkeld: elke halve maat een basnoot, met daartussen losse hogere snaren. Elke noot heeft zijn eigen kleine aanslag.',
     listenFor:
       'G duurt een hele maat, daarna delen C en D de volgende maat, elk twee tellen. De tweede helft gaat dus sneller.',
   },
@@ -210,7 +210,7 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     year: 1971,
     era: 'Classic',
     technique: 'strum',
-    bpm: 118,
+    bpm: 122,
     beatsPerBar: 4,
     stepsPerBeat: 2,
     pattern: ['D', REST, 'D', 'U', 'D', REST, 'D', 'U'],
@@ -331,7 +331,7 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     bpm: 104,
     beatsPerBar: 4,
     stepsPerBeat: 2,
-    pattern: ['B', 3, 4, 5, 'A', 3, 4, 5],
+    pattern: ['B', 3, 4, 5, 'B', 3, 4, 5],
     progression: [
       ['D', 4],
       ['F#m', 4],
@@ -354,18 +354,22 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     capo: 2,
     beatsPerBar: 4,
     stepsPerBeat: 2,
-    pattern: ['B', 3, 4, 5, 'A', 4, 3, 4],
+    pattern: ['B', 3, 4, 5, 'B', 4, 3, 4],
     progression: [
-      ['Cadd9', 4],
-      ['G', 4],
-      ['Em7', 4],
-      ['Dsus4', 4],
+      ['Cadd9', 2],
+      ['G', 2],
+      ['Em7', 2],
+      ['Dsus4', 2],
+      ['Cadd9', 2],
+      ['G', 2],
+      ['Em7', 2],
+      ['Dsus4', 2],
     ],
     changeLevel: 2,
     howItsPlayed:
       'Een getokkeld riffje met een capo op de 2e fret. Losse noten lopen op en neer door elk akkoord, als een klein melodietje.',
     listenFor:
-      'De dunste twee snaren veranderen nauwelijks tussen de akkoorden, dus luister naar de bas: die beweegt op tel 1 van elke maat.',
+      'Elke twee tellen een nieuw akkoord. De dunste twee snaren veranderen nauwelijks, dus luister naar de bas: die beweegt op tel 1 en tel 3 van elke maat.',
   },
 ];
 

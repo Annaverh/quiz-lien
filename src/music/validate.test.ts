@@ -27,6 +27,33 @@ describe('song library', () => {
     expect(findLibraryProblems([broken])).toContainEqual(expect.stringContaining('muted string in C'));
   });
 
+  it('reports a string picked twice in a row', () => {
+    const broken = toSong({
+      ...(SONGS.find(s => s.id === 'good-riddance') ?? SONGS[0]!),
+      id: 'repeat',
+      // In D the alternate bass is the G string, which the step after it plays again.
+      pattern: ['B', 3, 4, 3, 'A', 3, 4, 5],
+      progression: [
+        ['D', 4],
+        ['G', 4],
+      ],
+    });
+    expect(findLibraryProblems([broken])).toContainEqual(expect.stringContaining('both play string 3 in D'));
+  });
+
+  it('reports a picked chord change that does not start on the bass', () => {
+    const broken = toSong({
+      ...(SONGS.find(s => s.id === 'good-riddance') ?? SONGS[0]!),
+      id: 'offbass',
+      pattern: ['B', 3, 4, 3, 'A', 4, 5, 4],
+      progression: [
+        ['G', 2],
+        ['C', 2],
+      ],
+    });
+    expect(findLibraryProblems([broken])).toContainEqual(expect.stringContaining('C on beat 2 does not start'));
+  });
+
   it('reports a pattern of the wrong length and a half-filled bar', () => {
     const broken = toSong({
       ...SONGS[0]!,

@@ -1,14 +1,20 @@
+import { chordSegments } from './arrangement';
 import { chordFor } from './chords';
 import { MUTED } from './constants';
 import { patternFor } from './patterns';
-import type { Song, Style } from './types';
+import type { Chord, Song, StepToken, Style } from './types';
 import { isStrumToken, pickTargets, resolvePickString } from './voicing';
 
 const STYLES: readonly Style[] = ['strum', 'pick'];
 
+const pickedStrings = (chord: Chord, token: StepToken): number[] =>
+  pickTargets(token).map(target => resolvePickString(chord, target));
+
 /**
- * Checks song data that the type system can't: bar lengths, pattern lengths and
- * pick targets that would land on a muted string. Returns a list of problems.
+ * Checks song data that the type system can't: bar lengths, pattern lengths, pick targets
+ * that would land on a muted string, a string picked twice in a row (usually an alternate
+ * bass that resolves onto the next note) and chord changes that don't start on the bass.
+ * Returns a list of problems.
  */
 export function findLibraryProblems(songs: readonly Song[]): string[] {
   const problems: string[] = [];
@@ -28,12 +34,29 @@ export function findLibraryProblems(songs: readonly Song[]): string[] {
       if (wrongKind.length) problems.push(`${song.id}: ${style} pattern contains ${wrongKind.join(', ')}`);
     }
 
-    for (const [name] of song.progression) {
+    const pick = patternFor(song, 'pick');
+    for (const name of new Set(song.progression.map(([chord]) => chord))) {
       const chord = chordFor(name);
-      for (const target of patternFor(song, 'pick').flatMap(pickTargets)) {
+      for (const target of pick.flatMap(pickTargets)) {
         if (chord.frets[resolvePickString(chord, target)] === MUTED) {
           problems.push(`${song.id}: pick target ${target} lands on a muted string in ${name}`);
         }
+      }
+      pick.forEach((token, i) => {
+        const next = (i + 1) % pick.length;
+        const shared = pickedStrings(chord, token).filter(s =>
+          pickedStrings(chord, pick[next] as StepToken).includes(s),
+        );
+        if (shared.length) {
+          problems.push(`${song.id}: pick steps ${i + 1} and ${next + 1} both play string ${shared[0]} in ${name}`);
+        }
+      });
+    }
+
+    for (const segment of chordSegments(song)) {
+      const token = pick[(segment.start * song.stepsPerBeat) % pick.length] as StepToken;
+      if (!pickTargets(token).includes('B')) {
+        problems.push(`${song.id}: picked ${segment.chord} on beat ${segment.start} does not start on its bass note`);
       }
     }
   }

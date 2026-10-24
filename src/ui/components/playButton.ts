@@ -33,6 +33,8 @@ export function createPlayButton<T extends Playable>(options: PlayButtonOptions<
   let label = options.label;
   let playback: Playback | null = null;
   let pending = false;
+  /** Set by stop() while the engine is still starting, so a late start doesn't outlive its view. */
+  let cancelled = false;
 
   const glyph = el('span', { class: 'play-glyph' }, icon('play'));
   const text = el('span', {}, label);
@@ -58,9 +60,10 @@ export function createPlayButton<T extends Playable>(options: PlayButtonOptions<
   async function start(): Promise<void> {
     if (pending) return;
     pending = true;
+    cancelled = false;
     try {
       const playable = getPlayable();
-      playback = await engine.play(playable, {
+      const started = await engine.play(playable, {
         onStep,
         onEnd: result => {
           playback = null;
@@ -69,6 +72,11 @@ export function createPlayButton<T extends Playable>(options: PlayButtonOptions<
           if (!result.stopped && loop()) void start();
         },
       });
+      if (cancelled) {
+        started.stop();
+        return;
+      }
+      playback = started;
       setPlaying(true);
       onStart?.(playable);
     } catch (error) {
@@ -79,6 +87,7 @@ export function createPlayButton<T extends Playable>(options: PlayButtonOptions<
   }
 
   function stop(): void {
+    if (pending) cancelled = true;
     playback?.stop();
   }
 

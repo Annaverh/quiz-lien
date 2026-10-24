@@ -14,4 +14,7 @@ export interface TrackEntry {
  */
 export const TRACKS: Readonly<Record<string, TrackEntry>> = {
   // 'wonderwall': { file: 'audio/wonderwall.mp3', start: 12.34, bpm: 87.0 },
+  delilah: { file: 'audio/delilah.mp3', start: 0 },
+  hallelujah: { file: 'audio/hallelujah.mp3', start: 0 },
+  'wish-you-were-here': { file: 'audio/wish-you-were-here.mp3', start: 0 },
 };

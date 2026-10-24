@@ -1,13 +1,16 @@
 import { REST, type Song, type StepToken, type StepsPerBeat, type Style } from './types';
 
-/** Generic patterns, used to hear a song played the other way for comparison. */
+/**
+ * Generic patterns, used to hear a song played the other way for comparison. The picked
+ * 4/4 pattern restarts on the root halfway, so chords that last two beats start on their bass.
+ */
 const FALLBACK_PATTERNS: Readonly<Record<Style, Readonly<Record<StepsPerBeat, readonly StepToken[]>>>> = {
   strum: {
     2: ['D', REST, 'D', 'U', REST, 'U', 'D', 'U'],
     3: ['D', REST, 'D', 'U', 'D', 'U'],
   },
   pick: {
-    2: ['B', 3, 4, 3, 'A', 3, 4, 3],
+    2: ['B', 3, 4, 5, 'B', 4, 3, 4],
     3: ['B', 3, 4, 5, 4, 3],
   },
 };

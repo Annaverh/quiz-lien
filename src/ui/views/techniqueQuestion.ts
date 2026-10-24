@@ -109,7 +109,7 @@ export function techniqueQuestionView(app: AppActions, round: Round, song: Song)
     'section',
     { class: 'card', 'aria-labelledby': 'q-title' },
     questionKicker(round, 'technique'),
-    el('h2', { class: 'q-title', id: 'q-title' }, 'Wordt deze gitaar geslagen of getokkeld?'),
+    el('h2', { class: 'q-title', id: 'q-title' }, 'Hoor je een slagje of een tokkel?'),
     el('p', { class: 'q-help' }, 'Luister zo vaak als je wilt en kies dan.'),
     el('div', { class: 'listen-row' }, listen.node, eq, listenMeta),
     el('div', { class: 'answers' }, [...answerButtons.values()]),

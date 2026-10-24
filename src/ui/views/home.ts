@@ -48,15 +48,15 @@ export function homeView(app: AppActions, songs: readonly Song[]): View {
       el(
         'h1',
         {},
-        el('span', { class: 'w-strum' }, 'Geslagen'),
+        el('span', { class: 'w-strum' }, 'Slagje'),
         ' of ',
-        el('span', { class: 'w-pick' }, 'getokkeld'),
+        el('span', { class: 'w-pick' }, 'tokkel'),
         '? En wanneer wisselt het akkoord?',
       ),
       el(
         'p',
         {},
-        'Korte luisterquiz! De slagjes en tokkels zijn vereenvoudigde versies, als je ze liever complexer (of in meerdere niveaus) hebt laat je het maar weten.',
+        'Hoi Lien, bij deze de korte luisterquiz! De slagjes en tokkels zijn vereenvoudigde versies, als je ze liever complexer (of in meerdere niveaus) hebt laat je het maar weten.',
       ),
     ),
     el(

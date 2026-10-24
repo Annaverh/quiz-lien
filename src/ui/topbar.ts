@@ -1,8 +1,6 @@
 import { el } from '../lib/dom';
 import type { Round } from '../quiz/round';
 
-const APP_NAME = 'Quiz Lien';
-
 function progress(round: Round): HTMLElement {
   return el(
     'div',
@@ -15,18 +13,19 @@ function progress(round: Round): HTMLElement {
   );
 }
 
-/** Brand on the left; during a round, progress, score, streak and Stop on the right. */
+/** During a round: progress, score, streak and Stop. Empty (and hidden) otherwise. */
 export function renderTopbar(host: HTMLElement, round: Round | null, onHome: () => void): void {
-  const brand = el(
-    'button',
-    { type: 'button', class: 'brand', onClick: onHome, 'aria-label': `${APP_NAME}: naar het begin` },
-    APP_NAME,
-  );
-  const right = el('div', { class: 'topbar-right' });
-  if (round && !round.isFinished) {
-    right.append(progress(round), el('span', { class: 'chip' }, `${round.score} goed`));
-    if (round.streak >= 2) right.append(el('span', { class: 'chip good' }, `${round.streak} op rij`));
-    right.append(el('button', { type: 'button', class: 'btn quiet small', onClick: onHome }, 'Stoppen'));
+  if (!round || round.isFinished) {
+    host.replaceChildren();
+    return;
   }
-  host.replaceChildren(brand, right);
+  const right = el(
+    'div',
+    { class: 'topbar-right' },
+    progress(round),
+    el('span', { class: 'chip' }, `${round.score} goed`),
+    round.streak >= 2 ? el('span', { class: 'chip good' }, `${round.streak} op rij`) : null,
+    el('button', { type: 'button', class: 'btn quiet small', onClick: onHome }, 'Stoppen'),
+  );
+  host.replaceChildren(right);
 }
