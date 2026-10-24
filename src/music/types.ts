@@ -22,8 +22,10 @@ export type Rest = typeof REST;
  * keeps moving without hitting the strings.
  */
 export type StrumToken = 'D' | 'd' | 'U' | 'u' | Rest;
-/** Pick targets: the chord's bass string, its alternate bass string, or a string index. */
-export type PickString = 'B' | 'A' | StringIndex;
+/** A string counted up from the chord's bass string: '+1' is the next thinner string. */
+export type AboveBass = '+1' | '+2' | '+3' | '+4';
+/** Pick targets: the chord's bass string, its alternate bass string, a string above the bass, or a string index. */
+export type PickString = 'B' | 'A' | AboveBass | StringIndex;
 /** A single string, several plucked together (a pinch), or a rest. */
 export type PickToken = PickString | readonly PickString[] | Rest;
 export type StepToken = StrumToken | PickToken;
@@ -50,14 +52,17 @@ export interface SongDefinition {
    * ignored, so 'Dn Du nu Du' reads as four beats. Picking is a list of pick tokens.
    */
   readonly pattern: string | readonly StepToken[];
+  /** Pattern for when the song is played the other way (picked instead of strummed, or back); defaults to a generic one. */
+  readonly otherPattern?: string | readonly StepToken[];
   readonly progression: readonly (readonly [ChordName, number])[];
   /** How hard the chord changes are to hear, 1 (clear) to 3 (subtle). */
   readonly changeLevel: 1 | 2 | 3;
   readonly listenFor: string;
 }
 
-export interface Song extends Omit<SongDefinition, 'pattern'> {
+export interface Song extends Omit<SongDefinition, 'pattern' | 'otherPattern'> {
   readonly pattern: readonly StepToken[];
+  readonly otherPattern?: readonly StepToken[];
   readonly capo: number;
   readonly totalBeats: number;
 }

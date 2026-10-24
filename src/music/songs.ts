@@ -1,5 +1,10 @@
 import { parseStrumPattern } from './patterns';
-import { type Song, type SongDefinition } from './types';
+import { type PickString, type Song, type SongDefinition, type StepToken } from './types';
+
+/** The three strings above the chord's bass string, plucked together. */
+const THREE_ABOVE_BASS: readonly PickString[] = ['+1', '+2', '+3'];
+/** The same, one string higher. */
+const THREE_MORE_ABOVE_BASS: readonly PickString[] = ['+2', '+3', '+4'];
 
 /**
  * Simplified arrangements in the style of each song. Progressions and patterns are
@@ -359,12 +364,14 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     artist: 'Fréro Delavega',
     year: 2014,
     era: 'Modern',
-    technique: 'strum',
+    technique: 'pick',
     bpm: 100,
     capo: 2,
     beatsPerBar: 4,
     stepsPerBeat: 2,
-    pattern: 'DU DU du DU',
+    // Bass, then the three strings above it together; twice per chord.
+    pattern: ['B', THREE_ABOVE_BASS, 'B', THREE_ABOVE_BASS, 'B', THREE_MORE_ABOVE_BASS, 'B', THREE_ABOVE_BASS],
+    otherPattern: 'Dn Du Dn Du',
     progression: [
       ['Dm', 2],
       ['Am', 2],
@@ -377,14 +384,18 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     ],
     changeLevel: 1,
     listenFor:
-      'Elke halve maat een nieuw akkoord: Dm, Am, E, Am. De E springt eruit: die klinkt helder tussen de mineurakkoorden.',
+      'Elke halve maat een nieuw akkoord: Dm, Am, E, Am. Luister naar de basnoot: die zakt bij elke wissel naar een andere snaar, en de E klinkt helder tussen de mineurakkoorden.',
   },
 ];
+
+const parsePattern = (pattern: string | readonly StepToken[]): readonly StepToken[] =>
+  typeof pattern === 'string' ? parseStrumPattern(pattern) : pattern;
 
 export const toSong = (definition: SongDefinition): Song =>
   Object.freeze({
     ...definition,
-    pattern: typeof definition.pattern === 'string' ? parseStrumPattern(definition.pattern) : definition.pattern,
+    pattern: parsePattern(definition.pattern),
+    otherPattern: definition.otherPattern === undefined ? undefined : parsePattern(definition.otherPattern),
     capo: definition.capo ?? 0,
     totalBeats: definition.progression.reduce((sum, [, beats]) => sum + beats, 0),
   });

@@ -34,6 +34,13 @@ describe('voiceStep', () => {
     expect(voiceStep(chordFor('D'), 'A', 'pick', true).map(v => v.string)).toEqual([3]);
   });
 
+  it('counts strings above the bass, so the same pattern follows each chord', () => {
+    const above = ['+1', '+2', '+3'] as const;
+    expect(voiceStep(chordFor('Dm'), above, 'pick', true).map(v => v.string)).toEqual([3, 4, 5]);
+    expect(voiceStep(chordFor('Am'), above, 'pick', true).map(v => v.string)).toEqual([2, 3, 4]);
+    expect(voiceStep(chordFor('E'), above, 'pick', true).map(v => v.string)).toEqual([1, 2, 3]);
+  });
+
   it('plucks a pinch together and skips muted strings', () => {
     expect(voiceStep(c, ['B', 5], 'pick', true).map(v => v.string)).toEqual([1, 5]);
     expect(voiceStep(c, 0, 'pick', true)).toEqual([]);

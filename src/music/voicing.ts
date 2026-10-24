@@ -1,6 +1,7 @@
 import { MUTED, STRING_INDICES } from './constants';
 import {
   REST,
+  type AboveBass,
   type Chord,
   type PickString,
   type PickToken,
@@ -32,9 +33,15 @@ const isStrum = (token: StepToken): token is Strum => typeof token === 'string' 
 
 export const soundingStrings = (chord: Chord): StringIndex[] => STRING_INDICES.filter(s => chord.frets[s] !== MUTED);
 
+const isAboveBass = (target: PickString): target is AboveBass => typeof target === 'string' && target.startsWith('+');
+
+/** How far above the bass an '+n' target is; validation reports targets past the thinnest string. */
+export const stringsAboveBass = (target: PickString): number => (isAboveBass(target) ? Number(target.slice(1)) : 0);
+
 export function resolvePickString(chord: Chord, target: PickString): StringIndex {
   if (target === 'B') return chord.bass;
   if (target === 'A') return chord.alt;
+  if (isAboveBass(target)) return Math.min(5, chord.bass + stringsAboveBass(target)) as StringIndex;
   return target;
 }
 

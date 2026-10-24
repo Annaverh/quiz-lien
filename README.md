@@ -86,8 +86,11 @@ The `music` and `quiz` layers are pure and fully unit-tested.
 
      Spaces and `|` are ignored, so group by beat: `pattern: 'Dn Du nu Du'`.
 
-   - **Picking** is a list: `'B'` (bass string), `'A'` (alternate bass), a string index
-     `0`–`5` (0 = low E), an array for a pinch such as `['B', 5]`, or `REST`.
+   - **Picking** is a list: `'B'` (bass string), `'A'` (alternate bass), `'+1'`–`'+4'`
+     (strings above the bass, so they follow the chord), a string index `0`–`5` (0 = low E),
+     an array for a pinch such as `['B', 5]` or `['+1', '+2', '+3']`, or `REST`.
+   - **`otherPattern`** (optional) is the pattern used when someone switches to the other
+     technique, written the same way. Without it the app uses a generic pattern.
 3. Run `npm test`. The library test catches patterns of the wrong length, half-filled bars
    and picks that land on a muted string.
 

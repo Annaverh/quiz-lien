@@ -3,7 +3,7 @@ import { chordFor } from './chords';
 import { MUTED } from './constants';
 import { patternFor } from './patterns';
 import type { Chord, Song, StepToken, Style } from './types';
-import { isStrumToken, pickTargets, resolvePickString } from './voicing';
+import { isStrumToken, pickTargets, resolvePickString, stringsAboveBass } from './voicing';
 
 const STYLES: readonly Style[] = ['strum', 'pick'];
 
@@ -12,7 +12,7 @@ const pickedStrings = (chord: Chord, token: StepToken): number[] =>
 
 /**
  * Checks song data that the type system can't: bar lengths, pattern lengths, pick targets
- * that would land on a muted string, a string picked twice in a row (usually an alternate
+ * that would land on a muted string or past the thinnest one, a string picked twice in a row (usually an alternate
  * bass that resolves onto the next note) and chord changes that don't start on the bass.
  * Returns a list of problems.
  */
@@ -35,13 +35,23 @@ export function findLibraryProblems(songs: readonly Song[]): string[] {
     }
 
     const pick = patternFor(song, 'pick');
-    for (const name of new Set(song.progression.map(([chord]) => chord))) {
-      const chord = chordFor(name);
-      for (const target of pick.flatMap(pickTargets)) {
-        if (chord.frets[resolvePickString(chord, target)] === MUTED) {
-          problems.push(`${song.id}: pick target ${target} lands on a muted string in ${name}`);
+    for (const segment of chordSegments(song)) {
+      const chord = chordFor(segment.chord);
+      const first = segment.start * song.stepsPerBeat;
+      const steps = Array.from(
+        { length: segment.length * song.stepsPerBeat },
+        (_, k) => pick[(first + k) % pick.length],
+      );
+      for (const target of new Set(steps.flatMap(token => pickTargets(token as StepToken)))) {
+        if (chord.bass + stringsAboveBass(target) > 5) {
+          problems.push(`${song.id}: pick target ${target} is past the thinnest string in ${segment.chord}`);
+        } else if (chord.frets[resolvePickString(chord, target)] === MUTED) {
+          problems.push(`${song.id}: pick target ${target} lands on a muted string in ${segment.chord}`);
         }
       }
+    }
+    for (const name of new Set(song.progression.map(([chord]) => chord))) {
+      const chord = chordFor(name);
       pick.forEach((token, i) => {
         const next = (i + 1) % pick.length;
         const shared = pickedStrings(chord, token).filter(s =>

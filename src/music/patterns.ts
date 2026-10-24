@@ -36,7 +36,7 @@ const FALLBACK_PATTERNS: Readonly<Record<Style, Readonly<Record<StepsPerBeat, re
 };
 
 export const patternFor = (song: Song, style: Style): readonly StepToken[] =>
-  style === song.technique ? song.pattern : FALLBACK_PATTERNS[style][song.stepsPerBeat];
+  style === song.technique ? song.pattern : (song.otherPattern ?? FALLBACK_PATTERNS[style][song.stepsPerBeat]);
 
 const SIXTEENTHS = ['', 'e', '&', 'a'];
 
