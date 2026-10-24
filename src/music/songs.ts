@@ -159,7 +159,7 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     capo: 1,
     beatsPerBar: 2,
     stepsPerBeat: 3,
-    pattern: 'DnD uDn',
+    pattern: 'DnD nUd',
     progression: [
       ['G', 4],
       ['Em', 4],
