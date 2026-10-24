@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { mulberry32 } from '../lib/random';
-import { SONGS } from '../music/songs';
+import { SONGS, toSong } from '../music/songs';
+import { TRACKS } from './manifest';
 import { fitBeats, songTiming } from './timing';
 
 describe('fitBeats', () => {
@@ -26,8 +27,33 @@ describe('fitBeats', () => {
 });
 
 describe('songTiming', () => {
+  it('uses the measured timing of a song with a recording', () => {
+    const song = SONGS.find(s => s.id === 'wonderwall')!;
+    expect(songTiming(song)).toEqual({ start: TRACKS.wonderwall!.start, bpm: TRACKS.wonderwall!.bpm, isCustom: false });
+  });
+
   it('falls back to the arrangement when there is no recording or override', () => {
-    const song = SONGS[0]!;
+    const song = toSong({ ...SONGS[0]!, id: 'not-recorded' });
     expect(songTiming(song)).toEqual({ start: 0, bpm: song.bpm, isCustom: false });
+  });
+});
+
+describe('track manifest', () => {
+  const ids = new Set(SONGS.map(s => s.id));
+  const recordings = new Set(
+    Object.keys(import.meta.glob('../../public/audio/*.mp3')).map(path => path.split('/public/')[1]),
+  );
+
+  it.each(Object.entries(TRACKS))('%s points at an existing recording of a known song', (id, track) => {
+    expect(ids.has(id)).toBe(true);
+    expect(recordings.has(track.file)).toBe(true);
+    expect(track.start).toBeGreaterThanOrEqual(0);
+  });
+
+  it('keeps tempos close to the arrangements', () => {
+    for (const [id, track] of Object.entries(TRACKS)) {
+      const song = SONGS.find(s => s.id === id)!;
+      expect(Math.abs((track.bpm ?? song.bpm) / song.bpm - 1)).toBeLessThan(0.05);
+    }
   });
 });

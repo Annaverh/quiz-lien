@@ -5,7 +5,7 @@ import { otherStyle, STRING_NAMES, STYLE_LABEL, STYLE_PARTICIPLE, TAB_STRING_ORD
 import { countLabel } from '../../music/patterns';
 import { REST, type Song, type StepToken, type Style } from '../../music/types';
 import { pickTargets, resolvePickString, voiceStep } from '../../music/voicing';
-import { arrangeForPlayback } from '../../tracks/timing';
+import { arrangeForPlayback, tuneToRecord } from '../../tracks/timing';
 import type { View } from '../types';
 import { createPlayButton, playSnippet } from './playButton';
 import { controlGroup, segmented, TEMPO_OPTIONS, type TempoValue } from './segmented';
@@ -82,7 +82,8 @@ export function createPatternExplorer(song: Song, { showMixer = true } = {}): Vi
         type: 'button',
         class: 'tab-step',
         'aria-label': `Tel ${count}: ${describe(step)}`,
-        onClick: () => playSnippet(snippetForStep(song, step.chord, step.token as StepToken, style)),
+        onClick: () =>
+          playSnippet(tuneToRecord(song, snippetForStep(song, step.chord, step.token as StepToken, style))),
       },
       el('span', { class: 'cell chord' }, showChord ? step.chord : ''),
       stepBody(step, onBeat),

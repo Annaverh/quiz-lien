@@ -60,6 +60,7 @@ export interface NoteEvent {
   end: number;
   string: StringIndex;
   fret: number;
+  /** Pitch as a MIDI note number; fractional when tuned to a recording. */
   midi: number;
   velocity: number;
 }

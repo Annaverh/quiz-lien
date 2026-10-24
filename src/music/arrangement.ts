@@ -45,6 +45,8 @@ export interface ArrangeOptions {
   countIn?: number;
   /** A bell on every chord change. */
   chime?: boolean;
+  /** Pitch offset in cents, to match a recording that isn't tuned to A = 440 Hz. */
+  cents?: number;
 }
 
 export interface Arrangement {
@@ -94,6 +96,7 @@ export function arrange(song: Song, options: ArrangeOptions = {}): Arrangement {
     beats = song.totalBeats,
     countIn = 0,
     chime = false,
+    cents = 0,
   } = options;
   const pattern = patternFor(song, style);
   const beatDur = 60 / (bpm * tempo);
@@ -141,7 +144,7 @@ export function arrange(song: Song, options: ArrangeOptions = {}): Arrangement {
     totalSteps,
     duration: leadIn + totalSteps * stepDur,
     steps,
-    notes,
+    notes: detune(notes, cents),
     segments,
     changes,
     clicks: Array.from({ length: countIn }, (_, k) => ({ time: k * beatDur, accent: k === 0 })),
@@ -181,6 +184,10 @@ export function dampNotes(notes: NoteEvent[], changes: readonly { time: number; 
     }
   }
 }
+
+/** Shifts notes by `cents` (100 cents = one semitone); MIDI numbers may then be fractional. */
+export const detune = (notes: NoteEvent[], cents: number): NoteEvent[] =>
+  cents ? notes.map(note => ({ ...note, midi: note.midi + cents / 100 })) : notes;
 
 const SNIPPET_RING_SECONDS = 2.4;
 const ROLL_SPACING_SECONDS = 0.17;

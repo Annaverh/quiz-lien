@@ -1,9 +1,9 @@
 import { storage } from '../lib/storage';
-import { arrange, type Arrangement, type ArrangeOptions } from '../music/arrangement';
-import type { Song } from '../music/types';
+import { arrange, detune, type Arrangement, type ArrangeOptions } from '../music/arrangement';
+import type { NoteEvent, Song } from '../music/types';
 import { TRACKS, type TrackEntry } from './manifest';
 
-const TIMING_KEY = 'quiz-lien/timing/v1';
+const TIMING_KEY = 'quiz-lien/timing/v2';
 
 export interface SongTiming {
   /** Second in the recording where the fragment starts. */
@@ -48,9 +48,15 @@ export function resetTiming(song: Song): void {
   storage.write(TIMING_KEY, remaining);
 }
 
-/** Arranges at the record's tempo, so the app guitar can play along with the recording. */
-export const arrangeForPlayback = (song: Song, options: Omit<ArrangeOptions, 'bpm'> = {}): Arrangement =>
-  arrange(song, { ...options, bpm: songTiming(song).bpm });
+/** The record's tuning offset in cents (0 without a recording). */
+export const recordCents = (song: Song): number => finite(TRACKS[song.id]?.cents) ?? 0;
+
+/** Arranges at the record's tempo and tuning, so the app guitar can play along with the recording. */
+export const arrangeForPlayback = (song: Song, options: Omit<ArrangeOptions, 'bpm' | 'cents'> = {}): Arrangement =>
+  arrange(song, { ...options, bpm: songTiming(song).bpm, cents: recordCents(song) });
+
+/** Tunes a one-off snippet (one strum, one chord) to the record. */
+export const tuneToRecord = (song: Song, notes: NoteEvent[]): NoteEvent[] => detune(notes, recordCents(song));
 
 export interface BeatFit {
   /** Time of the first tap's beat. */

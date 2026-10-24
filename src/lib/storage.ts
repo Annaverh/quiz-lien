@@ -20,6 +20,14 @@ export const storage = {
     }
   },
 
+  remove(key: string): void {
+    try {
+      localStorage.removeItem(key);
+    } catch {
+      // Storage unavailable: there is nothing to remove.
+    }
+  },
+
   /** Moves a value saved under an old key, unless the new key already holds one. */
   migrate(from: string, to: string): void {
     try {

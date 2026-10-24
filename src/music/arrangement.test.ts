@@ -58,7 +58,9 @@ describe('arrange', () => {
 
   it('adds a bell on every change only when asked', () => {
     expect(arrange(song('perfect')).chimes).toEqual([]);
-    expect(arrange(song('perfect'), { chime: true }).chimes).toHaveLength(7);
+    const withBells = arrange(song('perfect'), { chime: true });
+    expect(withBells.chimes).toHaveLength(withBells.changes.length);
+    expect(withBells.changes).toEqual([4, 8, 12]);
   });
 
   it('plays the same notes every time', () => {
@@ -89,5 +91,14 @@ describe('dampNotes', () => {
     dampNotes([keeps, moves], [{ time: 2, chord: chordFor('Am') }]);
     expect(keeps.end).toBe(3);
     expect(moves.end).toBeCloseTo(2.015);
+  });
+});
+
+describe('detune', () => {
+  it('shifts every note by the given cents and leaves the original untouched', () => {
+    const notes = arrange(song('rising-sun')).notes;
+    const tuned = arrange(song('rising-sun'), { cents: 28 }).notes;
+    expect(tuned.map(n => n.midi - 0.28)).toEqual(notes.map(n => expect.closeTo(n.midi, 9)));
+    expect(arrange(song('rising-sun')).notes).toEqual(notes);
   });
 });

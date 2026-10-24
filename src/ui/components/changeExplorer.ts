@@ -2,7 +2,7 @@ import { el, nextId } from '../../lib/dom';
 import { chordSegments, snippetForChord } from '../../music/arrangement';
 import type { ChordName } from '../../music/chords';
 import type { Song } from '../../music/types';
-import { arrangeForPlayback } from '../../tracks/timing';
+import { arrangeForPlayback, tuneToRecord } from '../../tracks/timing';
 import type { View } from '../types';
 import type { BeatGrid } from './beatGrid';
 import { chordDiagram } from './chordDiagram';
@@ -43,7 +43,7 @@ export function createChangeExplorer(song: Song, grid: BeatGrid, { showMixer = t
           type: 'button',
           class: 'chord-chip',
           'aria-label': `Luister naar ${name}`,
-          onClick: () => playSnippet(snippetForChord(song, name)),
+          onClick: () => playSnippet(tuneToRecord(song, snippetForChord(song, name))),
         },
         chordDiagram(name),
         el('strong', {}, name),
