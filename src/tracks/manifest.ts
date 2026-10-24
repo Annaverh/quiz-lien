@@ -31,4 +31,5 @@ export const TRACKS: Readonly<Record<string, TrackEntry>> = {
   'im-yours': { file: 'im-yours.mp3', start: 5.0, bpm: 75.24, cents: -4 },
   delilah: { file: 'delilah.mp3', start: 5.0, bpm: 104.12, cents: 5 },
   'fast-car': { file: 'fast-car.mp3', start: 5.0, bpm: 102.97, cents: 7 },
+  'ton-visage': { file: 'ton-visage.mp3', start: 5.0, bpm: 100.02, cents: -3 },
 };

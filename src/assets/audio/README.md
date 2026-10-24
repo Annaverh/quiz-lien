@@ -19,6 +19,7 @@ Put one MP3 per song in this folder (`src/assets/audio/`), named after the song 
 | I'm Yours                         | `im-yours.mp3`           |
 | Hey There Delilah                 | `delilah.mp3`            |
 | Fast Car                          | `fast-car.mp3`           |
+| Ton visage                        | `ton-visage.mp3`         |
 
 Each file must also be listed in `TRACKS` in [`src/tracks/manifest.ts`](../../tracks/manifest.ts), for example:
 

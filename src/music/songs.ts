@@ -353,6 +353,32 @@ const SONG_DEFINITIONS: readonly SongDefinition[] = [
     listenFor:
       'Elke twee tellen een nieuw akkoord. De dunste twee snaren veranderen nauwelijks, dus luister naar de bas: die beweegt op tel 1 en tel 3 van elke maat.',
   },
+  {
+    id: 'ton-visage',
+    title: 'Ton visage',
+    artist: 'Fréro Delavega',
+    year: 2014,
+    era: 'Modern',
+    technique: 'strum',
+    bpm: 100,
+    capo: 2,
+    beatsPerBar: 4,
+    stepsPerBeat: 2,
+    pattern: 'DU DU du DU',
+    progression: [
+      ['Dm', 2],
+      ['Am', 2],
+      ['E', 2],
+      ['Am', 2],
+      ['Dm', 2],
+      ['Am', 2],
+      ['E', 2],
+      ['Am', 2],
+    ],
+    changeLevel: 1,
+    listenFor:
+      'Elke halve maat een nieuw akkoord: Dm, Am, E, Am. De E springt eruit: die klinkt helder tussen de mineurakkoorden.',
+  },
 ];
 
 export const toSong = (definition: SongDefinition): Song =>
