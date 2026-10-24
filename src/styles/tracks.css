@@ -1,0 +1,58 @@
+/* ---------- Real song ---------- */
+.mixer-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.mixer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--sunk);
+}
+.mixer label {
+  font-size: var(--step--1);
+  font-weight: 700;
+}
+.mixer input[type='range'] {
+  flex: 1 1 160px;
+  min-width: 0;
+  height: 28px;
+  accent-color: var(--ink);
+  cursor: pointer;
+}
+.mixer output {
+  min-width: 4.5ch;
+  text-align: right;
+  font-size: var(--step--1);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.mixer .hint {
+  flex-basis: 100%;
+}
+.sync-readout {
+  font-family: var(--font-tab);
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+}
+.nudges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.copy-box {
+  flex: 1 1 240px;
+  min-width: 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-tab);
+  font-size: 0.8rem;
+}

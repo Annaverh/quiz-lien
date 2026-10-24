@@ -1,0 +1,17 @@
+export interface TrackEntry {
+  /** Path of the recording, relative to the page (files live in public/audio/). */
+  file: string;
+  /** Second in the file where the fragment's first chord lands; 0 if the clip starts there. */
+  start?: number;
+  /** The record's tempo, when it differs from the arrangement's. */
+  bpm?: number;
+}
+
+/**
+ * Recordings of the real songs, keyed by song id. Find `start` and `bpm` with
+ * "Line up the real song" on a song's Study page, then paste the copied line here.
+ * See public/audio/README.md.
+ */
+export const TRACKS: Readonly<Record<string, TrackEntry>> = {
+  // 'wonderwall': { file: 'audio/wonderwall.mp3', start: 12.34, bpm: 87.0 },
+};

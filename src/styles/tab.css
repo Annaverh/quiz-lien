@@ -1,0 +1,120 @@
+/* ---------- Interactive tab ---------- */
+.tab-scroll {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.tab-board {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.tab-board[data-style='strum'] {
+  --now: var(--strum-soft);
+  --accent: var(--strum);
+}
+.tab-board[data-style='pick'] {
+  --now: var(--pick-soft);
+  --accent: var(--pick);
+}
+.tab-bar {
+  display: flex;
+  flex: 1 1 300px;
+  min-width: 0;
+  background: var(--paper);
+  border-radius: 10px;
+  padding: 6px 4px;
+  border-left: 3px solid var(--ink);
+}
+.tab-labels,
+.tab-step {
+  display: flex;
+  flex-direction: column;
+}
+.tab-labels {
+  width: 1.4rem;
+  flex: none;
+}
+.tab-step {
+  flex: 1 1 0;
+  min-width: 1.75rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.tab-step:hover {
+  background: var(--sunk);
+}
+.tab-step.is-now {
+  background: var(--now);
+}
+.cell {
+  height: 1.45rem;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-tab);
+  font-size: 0.8rem;
+  position: relative;
+}
+.cell.chord {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.8rem;
+  justify-items: start;
+  white-space: nowrap;
+  overflow: visible;
+  padding-left: 2px;
+}
+.cell.count {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.cell.count.on-beat {
+  color: var(--ink);
+  font-weight: 700;
+}
+.cell.str-label {
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+.cell.str::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 1px solid var(--line);
+}
+.cell.str .fret {
+  position: relative;
+  min-width: 1.15rem;
+  line-height: 1.15rem;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 700;
+}
+.cell.str.has-note .fret {
+  background: var(--accent);
+  color: var(--surface);
+}
+.cell.arrow {
+  height: 3.2rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--accent);
+}
+.cell.arrow.down {
+  font-size: 1.9rem;
+}
+.cell.arrow.up {
+  font-size: 1.3rem;
+  opacity: 0.85;
+}
+.cell.arrow.rest {
+  color: var(--line);
+  font-size: 1.2rem;
+}
+.tab-step.is-now .cell.arrow:not(.rest) {
+  transform: scale(1.12);
+}

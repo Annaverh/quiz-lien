@@ -1,0 +1,255 @@
+/* ---------- Beat grid (chord changes) ---------- */
+.countin {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 34px;
+  font-variant-numeric: tabular-nums;
+}
+.countin .dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--sunk);
+  color: var(--muted);
+  font-weight: 700;
+  font-size: var(--step--1);
+}
+.countin .dot.is-on {
+  background: var(--ink);
+  color: var(--paper);
+}
+.countin .label {
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+.beat-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.bar {
+  flex: 1 1 9.5rem;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--bpb), minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px 4px 4px 6px;
+  border-left: 3px solid var(--ink);
+  border-radius: 4px;
+}
+.beat {
+  position: relative;
+  height: 4.1rem;
+  min-width: 0;
+  border-radius: 9px;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 2px;
+  font-variant-numeric: tabular-nums;
+  transition:
+    background-color 0.12s,
+    border-color 0.12s,
+    transform 0.12s;
+}
+button.beat {
+  cursor: pointer;
+}
+button.beat:hover:not(:disabled) {
+  border-color: var(--ink);
+}
+.beat:disabled {
+  cursor: default;
+}
+.beat .num {
+  font-weight: 700;
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+.beat .tag {
+  position: absolute;
+  z-index: 1;
+  top: 3px;
+  left: 5px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.beat .mark {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px dashed transparent;
+}
+.beat.is-start {
+  background: var(--sunk);
+  border-style: dashed;
+}
+.beat.is-marked .mark {
+  background: var(--ink);
+  border: 2px solid var(--ink);
+}
+.beat.is-now {
+  border-color: var(--ink);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 0 var(--ink);
+}
+.beat.is-flash {
+  animation: flash 0.35s ease-out;
+}
+@keyframes flash {
+  from {
+    background: var(--strum-soft);
+  }
+}
+
+.beat.seg-a {
+  background: var(--strum-soft);
+}
+.beat.seg-b {
+  background: var(--pick-soft);
+}
+.beat.is-change::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--ink);
+}
+.beat.res-hit .mark {
+  background: var(--good);
+  border: 2px solid var(--good);
+}
+.beat.res-near .mark {
+  background: var(--near);
+  border: 2px solid var(--near);
+}
+.beat.res-extra .mark {
+  background: var(--bad);
+  border: 2px solid var(--bad);
+}
+.beat.res-miss .mark {
+  border: 2px dashed var(--bad);
+  background: transparent;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.legend i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.tap-btn {
+  width: 100%;
+  min-height: 84px;
+  border-radius: 18px;
+  cursor: pointer;
+  border: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 800;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.08s;
+}
+.tap-btn small {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 400;
+  opacity: 0.75;
+}
+.tap-btn:active,
+.tap-btn.is-hit {
+  transform: scale(0.98);
+}
+.tap-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.chord-shelf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.chord-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 12px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  min-width: 84px;
+}
+.chord-chip:hover {
+  border-color: var(--ink);
+}
+.chord-chip.is-now {
+  border-color: var(--ink);
+  background: var(--sunk);
+}
+.chord-chip strong {
+  font-size: var(--step-0);
+}
+.chord-chip small {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+.diagram {
+  width: 58px;
+  height: 72px;
+  color: var(--ink);
+}
+.diagram .grid {
+  stroke: var(--muted);
+  stroke-width: 1;
+  fill: none;
+}
+.diagram .nut {
+  stroke: var(--ink);
+  stroke-width: 3;
+}
+.diagram .dot {
+  fill: var(--ink);
+}
+.diagram text {
+  fill: var(--muted);
+  font-size: 8px;
+  font-family: var(--font-tab);
+  text-anchor: middle;
+}
